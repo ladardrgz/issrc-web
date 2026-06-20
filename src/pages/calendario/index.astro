@@ -1,0 +1,6 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { calendarEvents } from '../../data/site';
+---
+<MainLayout title="Calendario institucional" description="Fechas y actividades del Instituto Superior de Sanidad Ramón Carrillo."><Breadcrumbs items={[{label:'Calendario'}]}/><section class="page-hero"><div class="container"><span class="eyebrow">Agenda</span><h1>Calendario institucional</h1><p class="lead">Fechas académicas, actividades y novedades relevantes.</p></div></section><section class="section"><div class="container">{calendarEvents.length ? <div class="grid grid--3">{calendarEvents.map((event)=><article class="card"><time datetime={event.date}>{new Date(`${event.date}T12:00:00`).toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'})}</time><h2>{event.title}</h2><p>{event.category}</p></article>)}</div> : <div class="empty-state"><h2>No hay actividades publicadas actualmente</h2><p>Las fechas se incorporarán cuando exista información institucional confirmada.</p></div>}</div></section></MainLayout>

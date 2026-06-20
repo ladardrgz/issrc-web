@@ -1,0 +1,43 @@
+---
+import { navigation, site } from '../data/site';
+const path = Astro.url.pathname;
+const active = (href: string) => href === '/' ? path === '/' : path.startsWith(href);
+---
+<nav class="nav" aria-label="Navegación principal">
+  <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="main-menu"><span></span><span></span><span></span><span class="sr-only">Abrir menú</span></button>
+  <div class="nav__links" id="main-menu">
+    {navigation.map(({ href, label }, index) => <a href={href} class:list={{ active: active(href) }} aria-current={active(href) ? 'page' : undefined}><span>{String(index + 1).padStart(2, '0')}</span>{label}</a>)}
+    <a class="nav__campus" href={site.campusUrl} target="_blank" rel="noopener noreferrer">Campus Virtual <span aria-hidden="true">↗</span><span class="sr-only">(abre en una pestaña nueva)</span></a>
+  </div>
+</nav>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
+  const menu = document.querySelector<HTMLElement>('.nav__links');
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('is-open', !open);
+  });
+</script>
+<style>
+  .nav__links { display: flex; align-items: center; gap: 1.05rem; }
+  .nav a { position: relative; color: #40544e; font-size: .82rem; font-weight: 700; white-space: nowrap; }
+  .nav a > span:first-child { display: block; margin-bottom: .12rem; color: var(--teal); font: 700 .55rem 'Manrope'; letter-spacing: .08em; }
+  .nav a:not(.nav__campus)::after { position: absolute; right: 0; bottom: -.6rem; left: 0; height: 2px; background: var(--teal); content: ''; transform: scaleX(0); transition: transform .2s; }
+  .nav a:hover, .nav a.active { color: var(--green-dark); }
+  .nav a:hover::after, .nav a.active::after { transform: scaleX(1); }
+  .nav__campus { padding: .68rem .95rem; border-radius: .25rem 1rem 1rem 1rem; background: var(--teal-deep); color: var(--white) !important; }
+  .nav__campus:hover { background: var(--green-dark); }
+  .nav__toggle { display: none; padding: .5rem; border: 0; background: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+  @media (max-width: 930px) {
+    .nav__toggle { display: grid; gap: 5px; cursor: pointer; }
+    .nav__toggle span:not(.sr-only) { width: 25px; height: 2px; background: var(--ink); }
+    .nav__links { position: absolute; inset: 104px 1rem auto; display: none; max-height: calc(100vh - 120px); overflow-y: auto; flex-direction: column; align-items: stretch; gap: .2rem; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); box-shadow: var(--shadow); }
+    .nav__links.is-open { display: flex; }
+    .nav a { padding: .72rem; font-size: .95rem; }
+    .nav a::after { display: none; }
+    .nav__campus { margin-top: .4rem; text-align: center; }
+  }
+  @media (max-width: 720px) { .nav__links { inset-block-start: 104px; } }
+</style>

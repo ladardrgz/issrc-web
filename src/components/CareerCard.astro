@@ -1,0 +1,16 @@
+---
+import type { Career } from '../data/careers';
+const { career } = Astro.props as { career: Career };
+---
+<article class="career-card">
+  <div class="career-card__top"><span class="badge">{career.level}</span><span>{career.modality}</span></div>
+  <h3>{career.name}</h3><p>{career.description}</p>
+  <dl><div><dt>Duración</dt><dd>{career.duration}</dd></div><div><dt>Rol profesional</dt><dd>{career.graduateRole}</dd></div></dl>
+  <div class="career-card__actions"><a class="button" href={`/carreras/${career.slug}/`}>Ver carrera</a><a class="text-link" href={`/contacto/?carrera=${encodeURIComponent(career.name)}`}>Consultar inscripción →</a></div>
+</article>
+<style>
+  .career-card { display: flex; height: 100%; min-height: 440px; flex-direction: column; padding: 1.7rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); transition: transform .2s, box-shadow .2s; }.career-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
+  .career-card__top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: 2rem; color: var(--muted); font-size: .8rem; }.career-card h3 { font-size: 1.45rem; }.career-card > p { margin-top: .8rem; color: var(--muted); }
+  dl { display: grid; gap: .8rem; margin: 1.5rem 0 0; padding-top: 1.2rem; border-top: 1px solid var(--line); }dt { color: var(--muted); font-size: .74rem; text-transform: uppercase; }dd { margin: .15rem 0 0; font-weight: 600; }
+  .career-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; margin-top: auto; padding-top: 1.5rem; }.career-card__actions .text-link { margin: 0; font-size: .85rem; }
+</style>

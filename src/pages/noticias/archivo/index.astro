@@ -1,0 +1,5 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+---
+<MainLayout title="Archivo de noticias" description="Archivo histórico de noticias institucionales."><Breadcrumbs items={[{label:'Noticias',href:'/noticias/'},{label:'Archivo'}]}/><section class="page-hero"><div class="container"><span class="eyebrow">Archivo</span><h1>Noticias históricas</h1><p class="lead">El archivo se organizará por año sin ocupar el listado principal de noticias.</p></div></section><section class="section"><div class="container empty-state"><h2>Archivo en preparación</h2><p>Se incorporará contenido histórico luego de revisar y migrar las publicaciones del sitio anterior.</p></div></section></MainLayout>

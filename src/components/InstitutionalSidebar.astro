@@ -1,0 +1,54 @@
+---
+import { calendarEvents, site } from '../data/site';
+
+interface Link { label: string; href: string; }
+interface Props { title?: string; links?: Link[]; }
+
+const {
+  title = 'En esta sección',
+  links = [
+    { label: 'Conocer la institución', href: '/institucion/' },
+    { label: 'Explorar carreras', href: '/carreras/' },
+    { label: 'Información para ingresantes', href: '/ingresantes/' },
+    { label: 'Noticias institucionales', href: '/noticias/' },
+  ],
+} = Astro.props;
+---
+<aside class="institutional-rail" aria-label="Información complementaria">
+  <div class="rail-section rail-index">
+    <span class="rail-kicker">Índice</span>
+    <h2>{title}</h2>
+    <nav>{links.map((link, index) => <a href={link.href}><span>{String(index + 1).padStart(2, '0')}</span>{link.label}<b aria-hidden="true">↗</b></a>)}</nav>
+  </div>
+  <div class="rail-section rail-campus">
+    <span class="rail-kicker">Acceso académico</span>
+    <h2>Campus Virtual</h2>
+    <p>Entorno externo para estudiantes y docentes.</p>
+    <a href={site.campusUrl} target="_blank" rel="noopener noreferrer">Ingresar al Campus ↗</a>
+  </div>
+  <div class="rail-section">
+    <span class="rail-kicker">Próxima actividad</span>
+    {calendarEvents.length ? <div class="rail-event"><time datetime={calendarEvents[0].date}>{new Date(`${calendarEvents[0].date}T12:00:00`).toLocaleDateString('es-AR', { day: '2-digit', month: 'long' })}</time><strong>{calendarEvents[0].title}</strong></div> : <p class="rail-muted">No hay actividades publicadas actualmente.</p>}
+    <a class="rail-small-link" href="/calendario/">Ver calendario →</a>
+  </div>
+  <div class="rail-section rail-contact">
+    <span class="rail-kicker">Informes</span>
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+    <a href={site.phones[0].href}>{site.phones[0].label}</a>
+    <small>{site.address}</small>
+  </div>
+</aside>
+<style>
+  .institutional-rail { display: grid; align-self: start; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+  .rail-section { padding: 1.5rem; }.rail-section + .rail-section { border-top: 1px solid var(--line); }
+  .rail-kicker { display: block; margin-bottom: .65rem; color: var(--teal-deep); font-size: .67rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+  h2 { font-size: 1.1rem; letter-spacing: -.02em; } nav { display: grid; margin: 1rem -1.5rem -1.5rem; }
+  nav a { display: grid; grid-template-columns: 28px 1fr auto; gap: .65rem; align-items: center; padding: .8rem 1.5rem; border-top: 1px solid var(--line); color: var(--ink); font-size: .84rem; font-weight: 650; }
+  nav a span { color: var(--teal); font: 800 .68rem 'Manrope'; } nav a b { color: var(--teal-deep); font-weight: 400; opacity: 0; transform: translate(-5px, 5px); transition: .2s; }
+  nav a:hover { background: var(--surface); } nav a:hover b { opacity: 1; transform: none; }
+  .rail-campus { background: var(--green-deep); color: var(--white); }.rail-campus .rail-kicker { color: #9fc8c9; }.rail-campus p { margin: .65rem 0 1rem; color: #c7d5d3; font-size: .82rem; }.rail-campus a { color: #a9cbcc; font-size: .82rem; font-weight: 800; }
+  .rail-muted { color: var(--muted); font-size: .82rem; }.rail-small-link { display: inline-block; margin-top: .8rem; color: var(--green); font-size: .78rem; font-weight: 700; }
+  .rail-contact { display: grid; }.rail-contact a { font-size: .84rem; font-weight: 700; }.rail-contact small { margin-top: .65rem; color: var(--muted); }
+  @media (max-width: 900px) { .institutional-rail { grid-template-columns: 1fr 1fr; }.rail-section + .rail-section { border-top: 0; border-left: 1px solid var(--line); }.rail-section:nth-child(n+3) { border-top: 1px solid var(--line); } }
+  @media (max-width: 580px) { .institutional-rail { grid-template-columns: 1fr; }.rail-section + .rail-section { border-top: 1px solid var(--line); border-left: 0; } }
+</style>
