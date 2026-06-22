@@ -4,7 +4,7 @@
 
 Decap CMS es una interfaz web sobre Git: no almacena contenidos por su cuenta. Al publicar crea cambios Markdown y archivos multimedia en GitHub. Cloudflare Pages detecta el cambio en `main`, ejecuta `npm run build` y sirve únicamente archivos estáticos. No se necesita VPS, base de datos ni backend de contenidos.
 
-La única pieza de autenticación es OAuth: GitHub no permite guardar el `client_secret` en el navegador. En producción, `/admin/` debe apuntar a un proveedor OAuth serverless (por ejemplo, un Worker de Cloudflare auditado) que conserve ese secreto como variable cifrada. El Worker autentica; no almacena noticias ni procesa la web pública.
+La única pieza de autenticación es OAuth: GitHub no permite guardar el `client_secret` en el navegador. Las Pages Functions en `functions/api/` realizan ese intercambio y conservan el secreto como variable cifrada de Cloudflare. Autentican; no almacenan noticias ni procesan la web pública.
 
 ```text
 persona editora -> /admin/ -> OAuth -> GitHub (rama editorial/PR)
@@ -26,6 +26,8 @@ Documentación oficial de referencia:
 - `public/admin/config.yml`: conecta Decap con GitHub, activa el flujo editorial y define los campos y carpetas de subida.
 - `public/uploads/images/`: imágenes públicas. Que sea pública es intencional; nunca guardar documentos privados aquí.
 - `public/uploads/documents/`: PDF públicos vinculados desde noticias.
+- `functions/api/auth.js`: inicia OAuth, crea el estado CSRF y una cookie segura de diez minutos.
+- `functions/api/callback.js`: valida el estado e intercambia el código por un token sin exponer el secreto.
 - `public/_headers`: cabeceras de seguridad reconocidas por Cloudflare Pages y política más estricta para `/admin/`.
 - `src/content.config.ts`: valida frontmatter, estado, slug y rutas/extensiones antes de compilar.
 - `src/content/noticias/`: fuente Markdown versionada de cada noticia.
@@ -81,12 +83,14 @@ Revisar `/`, `/noticias/`, `/noticias/bienvenida/`, `/rss.xml`, `/sitemap.xml` y
 
 ## OAuth de GitHub en producción
 
-1. Elegir un proveedor OAuth para Decap compatible con GitHub y Cloudflare Workers, revisar su código y fijar una versión.
-2. Crear una GitHub OAuth App desde una cuenta/organización institucional, no personal. La callback debe coincidir exactamente con la del proveedor.
-3. Guardar `CLIENT_ID` y `CLIENT_SECRET` como secretos cifrados del Worker. Nunca usar `PUBLIC_*`, archivos `.env` versionados ni `config.yml` para el secreto.
-4. Dar al Worker un dominio estable, idealmente `cms-auth.issformosa.edu.ar`.
-5. Descomentar `base_url` y `auth_endpoint` en `public/admin/config.yml`.
-6. Si se usa un dominio propio en vez de `*.workers.dev`, agregar ese origen a `connect-src` en `public/_headers`.
+Las funciones serverless están en `functions/api/auth.js` y `functions/api/callback.js`. Cloudflare Pages las publica como `/api/auth` y `/api/callback`; no almacenan contenido ni requieren base de datos.
+
+1. Crear una GitHub OAuth App desde una cuenta/organización institucional. Homepage: `https://issrc-web.ladardrgz.workers.dev/`; callback exacta: `https://issrc-web.ladardrgz.workers.dev/api/callback`.
+2. En Cloudflare Pages, agregar `GITHUB_CLIENT_ID` como variable y `GITHUB_CLIENT_SECRET` como secreto cifrado, solo para Production.
+3. No usar prefijo `PUBLIC_`, no pegar los valores en `config.yml` y no subirlos a Git.
+4. El alcance predeterminado es `public_repo`, suficiente para este repositorio público. Solo si pasa a privado, crear conscientemente `GITHUB_OAUTH_SCOPE=repo`.
+5. Si todavía se usa el dominio `pages.dev`, reemplazar temporalmente el dominio en la OAuth App y en `public/admin/config.yml`; Homepage, callback, `site_domain` y `base_url` deben coincidir.
+6. Volver a desplegar después de crear o modificar variables.
 7. Probar login, creación de borrador, revisión y publicación con una cuenta editora de prueba.
 
 No desplegar el panel productivo con un proxy local ni colocar un Personal Access Token en JavaScript. Decap no convierte `/admin/` en privado: cualquiera puede cargar su HTML, pero solamente GitHub + OAuth + permisos del repositorio deben permitir operar. `noindex` evita indexación, no sustituye autenticación.

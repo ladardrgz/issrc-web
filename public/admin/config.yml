@@ -3,14 +3,15 @@ backend:
   name: github
   repo: ladardrgz/issrc-web
   branch: main
-  # GitHub requiere OAuth. Después de desplegar el proveedor serverless, agregá:
-  # base_url: https://cms-auth.tu-dominio.edu.ar
-  # auth_endpoint: auth
+  site_domain: https://issrc-web.ladardrgz.workers.dev
+  base_url: https://issrc-web.ladardrgz.workers.dev
+  auth_endpoint: /api/auth
+  auth_scope: public_repo
 
 local_backend: true
 publish_mode: editorial_workflow
-site_url: https://www.issformosa.edu.ar
-display_url: https://www.issformosa.edu.ar
+site_url: https://issrc-web.ladardrgz.workers.dev
+display_url: https://issrc-web.ladardrgz.workers.dev
 logo_url: /images/branding/logo-redisenado.png
 
 # Carpeta predeterminada para imágenes insertadas dentro del editor Markdown.
