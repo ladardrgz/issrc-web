@@ -87,6 +87,8 @@ Las funciones serverless están en `functions/api/auth.js` y `functions/api/call
 
 El despliegue actual usa un dominio `workers.dev`. Por eso `worker.js` enruta esos dos endpoints y entrega el resto del sitio estático mediante el binding `ASSETS` definido en `wrangler.jsonc`. El CMS requiere `unsafe-eval`; se habilita únicamente en la CSP de `/admin/*`, no en el sitio público.
 
+La CSP del panel también admite `blob:` y `data:` en `connect-src`. Decap utiliza esas URLs temporales para leer imágenes seleccionadas antes de persistirlas en GitHub; la autorización está limitada a `/admin/*`.
+
 1. Crear una GitHub OAuth App desde una cuenta/organización institucional. Homepage: `https://issrc-web.ladardrgz.workers.dev/`; callback exacta: `https://issrc-web.ladardrgz.workers.dev/api/callback`.
 2. En Cloudflare Pages, agregar `GITHUB_CLIENT_ID` como variable y `GITHUB_CLIENT_SECRET` como secreto cifrado, solo para Production.
 3. No usar prefijo `PUBLIC_`, no pegar los valores en `config.yml` y no subirlos a Git.
