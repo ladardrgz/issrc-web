@@ -87,13 +87,11 @@ collections:
         widget: file
         required: false
         choose_url: false
-        media_folder: public/uploads/documents
-        public_folder: /uploads/documents
         accept: application/pdf
         media_library:
           config:
             multiple: false
-        hint: "Opcional. Solo PDF. El archivo se almacenará fuera del repositorio mediante Cloudinary."
+        hint: "Opcional. Solo PDF. Seleccionalo desde Cloudinary; comprobá el enlace antes de publicar."
       - label: Estado
         name: status
         widget: select
