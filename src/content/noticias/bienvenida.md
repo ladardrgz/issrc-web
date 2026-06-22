@@ -5,6 +5,7 @@ date: 2026-06-22
 category: Institucional
 summary: Presentamos el nuevo espacio digital de nuestra comunidad educativa.
 featuredImage: /uploads/images/istockphoto-2233739095-612x612.jpg
+pdf: /uploads/documents/curso-de-html-css-desde-cero.pdf
 status: published
 ---
 
