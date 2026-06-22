@@ -85,6 +85,8 @@ Revisar `/`, `/noticias/`, `/noticias/bienvenida/`, `/rss.xml`, `/sitemap.xml` y
 
 Las funciones serverless están en `functions/api/auth.js` y `functions/api/callback.js`. Cloudflare Pages las publica como `/api/auth` y `/api/callback`; no almacenan contenido ni requieren base de datos.
 
+El despliegue actual usa un dominio `workers.dev`. Por eso `worker.js` enruta esos dos endpoints y entrega el resto del sitio estático mediante el binding `ASSETS` definido en `wrangler.jsonc`. El CMS requiere `unsafe-eval`; se habilita únicamente en la CSP de `/admin/*`, no en el sitio público.
+
 1. Crear una GitHub OAuth App desde una cuenta/organización institucional. Homepage: `https://issrc-web.ladardrgz.workers.dev/`; callback exacta: `https://issrc-web.ladardrgz.workers.dev/api/callback`.
 2. En Cloudflare Pages, agregar `GITHUB_CLIENT_ID` como variable y `GITHUB_CLIENT_SECRET` como secreto cifrado, solo para Production.
 3. No usar prefijo `PUBLIC_`, no pegar los valores en `config.yml` y no subirlos a Git.
