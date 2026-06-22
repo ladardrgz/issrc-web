@@ -1,9 +1,10 @@
 ---
-title: "Una nueva forma de encontrarnos"
-slug: "bienvenida"
-date: 2026-06-19
+title: Una nueva forma de encontrarnos
+slug: bienvenida
+date: 2026-06-22
 category: Institucional
-summary: "Presentamos el nuevo espacio digital de nuestra comunidad educativa."
+summary: Presentamos el nuevo espacio digital de nuestra comunidad educativa.
+featuredImage: /uploads/images/istockphoto-2233739095-612x612.jpg
 status: published
 ---
 
