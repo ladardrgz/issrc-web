@@ -23,9 +23,11 @@ Inside of your Astro project, you'll see the following folders and files:
 └── package.json
 ```
 
-## Blog
+## Noticias administrables
 
-Cada archivo `.md` de `src/content/blog/` genera una página. Sus campos requeridos están definidos en `src/content.config.ts`.
+Las noticias viven como Markdown en `src/content/noticias/` y se administran con Decap CMS desde `/admin/`. El sitio sigue siendo estático: cada publicación aprobada genera un commit/PR en GitHub y Cloudflare Pages vuelve a construirlo.
+
+La instalación, el flujo editorial, OAuth, despliegue y checklist de seguridad están explicados en [docs/decap-cms.md](docs/decap-cms.md).
 
 ## Comandos
 

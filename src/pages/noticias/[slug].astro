@@ -1,0 +1,64 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('noticias', ({ data }) => data.status === 'published');
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, date, category, summary, featuredImage, pdf } = post.data;
+const formattedDate = date.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: title,
+  ...(summary ? { description: summary } : {}),
+  ...(featuredImage ? { image: new URL(featuredImage, Astro.site).href } : {}),
+  datePublished: date.toISOString(),
+  author: { '@type': 'Organization', name: 'Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación HAC' },
+};
+---
+
+<MainLayout title={title} description={summary} image={featuredImage} type="article">
+  <Breadcrumbs items={[{ label: 'Noticias', href: '/noticias/' }, { label: title }]} />
+  <article>
+    <header class="article-head">
+      <div class="container article-width">
+        <span class="badge">{category}</span>
+        <h1>{title}</h1>
+        {summary && <p class="lead">{summary}</p>}
+        <time datetime={date.toISOString()}>{formattedDate}</time>
+      </div>
+    </header>
+    {featuredImage && (
+      <div class="container article-width article-image">
+        <img src={featuredImage} alt={`Imagen destacada de ${title}`} width="1200" height="675" />
+      </div>
+    )}
+    <div class="section container article-width content">
+      <Content />
+      {pdf && <a class="button document-link" href={pdf} type="application/pdf">Consultar documento PDF</a>}
+    </div>
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</MainLayout>
+
+<style>
+  .article-width { max-width: 800px; }
+  .article-head { padding: clamp(3.5rem, 7vw, 6rem) 0; background: var(--green-dark); color: var(--white); }
+  .article-head h1 { margin-top: 1.2rem; font-size: clamp(2.4rem, 5vw, 4.5rem); }
+  .article-head .lead { margin-top: 1.2rem; color: #c4d5cc; }
+  .article-head time { display: block; margin-top: 1.5rem; color: var(--mint); }
+  .article-image { overflow: hidden; margin-top: 3rem; padding: 0; border-radius: var(--radius); background: var(--surface); }
+  .article-image img { width: 100%; height: auto; }
+  .content :global(h2) { margin: 2.5rem 0 1rem; font-size: 2rem; }
+  .content :global(h3) { margin: 2rem 0 .8rem; }
+  .content :global(p), .content :global(ul), .content :global(ol) { margin: 1rem 0; color: var(--muted); font-size: 1.08rem; }
+  .content :global(a) { color: var(--green); text-decoration: underline; }
+  .document-link { margin-top: 2rem; color: var(--white) !important; text-decoration: none !important; }
+</style>

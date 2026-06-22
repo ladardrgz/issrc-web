@@ -1,9 +1,10 @@
 ---
 title: "Una nueva forma de encontrarnos"
-description: "Presentamos el nuevo espacio digital de nuestra comunidad educativa."
+slug: "bienvenida"
 date: 2026-06-19
 category: Institucional
-draft: false
+summary: "Presentamos el nuevo espacio digital de nuestra comunidad educativa."
+status: published
 ---
 
 Este espacio nace para acercar las historias, experiencias y aprendizajes que construimos todos los días en ISRC.

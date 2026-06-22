@@ -1,0 +1,94 @@
+# Decap guarda cada entrada como Markdown en GitHub; no existe una base de datos.
+backend:
+  name: github
+  repo: ladardrgz/issrc-web
+  branch: main
+  # GitHub requiere OAuth. Después de desplegar el proveedor serverless, agregá:
+  # base_url: https://cms-auth.tu-dominio.edu.ar
+  # auth_endpoint: auth
+
+local_backend: true
+publish_mode: editorial_workflow
+site_url: https://www.issformosa.edu.ar
+display_url: https://www.issformosa.edu.ar
+logo_url: /images/branding/logo-redisenado.png
+
+# Carpeta predeterminada para imágenes insertadas dentro del editor Markdown.
+media_folder: public/uploads/images
+public_folder: /uploads/images
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: noticias
+    label: Noticias y comunicados
+    label_singular: Noticia o comunicado
+    description: Publicaciones institucionales revisadas antes de llegar al sitio público.
+    folder: src/content/noticias
+    create: true
+    delete: false
+    extension: md
+    format: frontmatter
+    identifier_field: slug
+    slug: "{{slug}}"
+    summary: "{{date}} · {{category}} · {{title}}"
+    sortable_fields: [date, title, category, status]
+    view_filters:
+      - label: Borradores
+        field: status
+        pattern: draft
+      - label: Publicadas
+        field: status
+        pattern: published
+    fields:
+      - { label: Título, name: title, widget: string, required: true, minlength: 5, maxlength: 120 }
+      - label: Slug
+        name: slug
+        widget: string
+        required: true
+        minlength: 3
+        maxlength: 100
+        hint: "URL sin espacios ni acentos. Ejemplo: inscripciones-2026. No cambiar después de publicar."
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Usá minúsculas, números y guiones simples."]
+      - { label: Fecha, name: date, widget: datetime, required: true, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - label: Categoría
+        name: category
+        widget: select
+        required: true
+        options: [Institucional, Comunicado, Académica, Actividades]
+        default: Institucional
+      - { label: Resumen, name: summary, widget: text, required: false, maxlength: 280, hint: "Opcional. Si falta, la tarjeta no muestra un texto vacío." }
+      - label: Imagen destacada
+        name: featuredImage
+        widget: image
+        required: false
+        choose_url: false
+        media_folder: public/uploads/images
+        public_folder: /uploads/images
+        accept: image/avif,image/gif,image/jpeg,image/png,image/webp
+        hint: "Opcional. Formatos admitidos por el build: AVIF, GIF, JPEG, PNG o WebP."
+      - label: Documento PDF
+        name: pdf
+        widget: file
+        required: false
+        choose_url: false
+        media_folder: public/uploads/documents
+        public_folder: /uploads/documents
+        accept: application/pdf
+        media_library:
+          config:
+            multiple: false
+        hint: "Opcional. Solo PDF; el build rechazará otras extensiones."
+      - label: Estado
+        name: status
+        widget: select
+        required: true
+        options:
+          - { label: Borrador, value: draft }
+          - { label: Publicado, value: published }
+        default: draft
+        hint: "Debe estar en Publicado y completar el flujo editorial para aparecer en el sitio."
+      - { label: Contenido principal, name: body, widget: markdown, required: true, minimal: true, hint: "Usá Markdown. El sitio rechaza HTML crudo por seguridad." }

@@ -3,10 +3,10 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection('blog');
-  return posts.map((post) => ({ params: { id: post.id }, props: { id: post.id } }));
+  const posts = await getCollection('noticias', ({ data }) => data.status === 'published');
+  return posts.map((post) => ({ params: { id: post.id }, props: { slug: post.data.slug } }));
 }) satisfies GetStaticPaths;
 
-const { id } = Astro.props;
-return Astro.redirect(`/noticias/${id}/`, 301);
+const { slug } = Astro.props;
+return Astro.redirect(`/noticias/${slug}/`, 301);
 ---
