@@ -1,14 +1,19 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const optionalUpload = (folder: 'images' | 'documents', extensions: string[]) =>
+const CLOUDINARY_CLOUD_NAME = 'dw9odd2n1';
+
+const optionalAsset = (folder: 'images' | 'documents', extensions: string[]) =>
   z.preprocess(
     (value) => (value === '' ? undefined : value),
     z
       .string()
       .regex(
-        new RegExp(`^/uploads/${folder}/[^?#]+\\.(${extensions.join('|')})$`, 'i'),
-        `El archivo debe estar dentro de /uploads/${folder}/ y tener un formato permitido.`,
+        new RegExp(
+          `^(?:/uploads/${folder}/[^?#]+|https://res\\.cloudinary\\.com/${CLOUDINARY_CLOUD_NAME}/(?:image|raw)/upload/[^?#]+)\\.(${extensions.join('|')})(?:[?#].*)?$`,
+          'i',
+        ),
+        `El archivo debe ser un recurso permitido de Cloudinary o estar dentro de /uploads/${folder}/.`,
       )
       .optional(),
   );
@@ -29,8 +34,8 @@ const noticias = defineCollection({
       (value) => (value === '' ? undefined : value),
       z.string().trim().max(280).optional(),
     ),
-    featuredImage: optionalUpload('images', ['avif', 'gif', 'jpeg', 'jpg', 'png', 'webp']),
-    pdf: optionalUpload('documents', ['pdf']),
+    featuredImage: optionalAsset('images', ['avif', 'gif', 'jpeg', 'jpg', 'png', 'webp']),
+    pdf: optionalAsset('documents', ['pdf']),
     status: z.enum(['draft', 'published']).default('draft'),
   }),
 });

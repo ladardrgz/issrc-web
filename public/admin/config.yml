@@ -10,11 +10,25 @@ backend:
 
 local_backend: true
 publish_mode: editorial_workflow
+# Traduce la interfaz general de Decap CMS. Los nombres, ayudas y opciones de
+# cada campo se definen en español más abajo para orientar a los editores.
+locale: es
 site_url: https://issrc-web.ladardrgz.workers.dev
 display_url: https://issrc-web.ladardrgz.workers.dev
 logo_url: /images/branding/logo-redisenado.png
 
-# Carpeta predeterminada para imágenes insertadas dentro del editor Markdown.
+# Cloudinary almacena y entrega los recursos desde su CDN. Cloud name y API key
+# son identificadores públicos requeridos por el widget; API secret nunca va aquí.
+media_library:
+  name: cloudinary
+  config:
+    cloud_name: dw9odd2n1
+    api_key: "483949511648638"
+    output_filename_only: false
+    use_secure_url: true
+    multiple: false
+
+# Compatibilidad con recursos históricos que ya existen dentro del repositorio.
 media_folder: public/uploads/images
 public_folder: /uploads/images
 
@@ -66,11 +80,8 @@ collections:
         name: featuredImage
         widget: image
         required: false
-        choose_url: false
-        media_folder: public/uploads/images
-        public_folder: /uploads/images
         accept: image/avif,image/gif,image/jpeg,image/png,image/webp
-        hint: "Opcional. Formatos admitidos por el build: AVIF, GIF, JPEG, PNG o WebP."
+        hint: "Opcional. Subí una imagen horizontal a Cloudinary. Formatos: AVIF, GIF, JPEG, PNG o WebP."
       - label: Documento PDF
         name: pdf
         widget: file
@@ -82,7 +93,7 @@ collections:
         media_library:
           config:
             multiple: false
-        hint: "Opcional. Solo PDF; el build rechazará otras extensiones."
+        hint: "Opcional. Solo PDF. El archivo se almacenará fuera del repositorio mediante Cloudinary."
       - label: Estado
         name: status
         widget: select

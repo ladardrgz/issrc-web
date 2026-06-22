@@ -7,4 +7,4 @@
 /admin/*
   Cache-Control: no-store
   X-Robots-Tag: noindex, nofollow, noarchive
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.githubusercontent.com; connect-src 'self' data: blob: https://api.github.com https://github.com https://*.workers.dev; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://github.com
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com https://cloudinary.com https://*.cloudinary.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.githubusercontent.com https://res.cloudinary.com; connect-src 'self' data: blob: https://api.github.com https://github.com https://*.workers.dev https://cloudinary.com https://*.cloudinary.com; frame-src https://cloudinary.com https://*.cloudinary.com; object-src 'none'; base-uri 'self'; form-action 'self' https://github.com https://cloudinary.com https://*.cloudinary.com
