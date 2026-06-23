@@ -1,0 +1,256 @@
+---
+import type { Career } from '../data/careers';
+
+type StudyPlan = Career['plan'];
+
+const { plan, careerSlug } = Astro.props as {
+  plan?: StudyPlan;
+  careerSlug: string;
+};
+
+const planId = `career-study-plan-${careerSlug}`;
+---
+
+<div class="career-study-plan" data-career-study-plan>
+  {plan?.years?.length ? (
+    <>
+      <button
+        class="career-study-plan__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls={planId}
+        data-study-plan-toggle
+      >
+        <span>Ver Plan de Estudios</span>
+        <span class="career-study-plan__toggle-icon" aria-hidden="true">⌄</span>
+      </button>
+
+      <div class="career-study-plan__panel" id={planId} hidden>
+        {plan.years.map((year, yearIndex) => {
+          const yearId = `${planId}-year-${yearIndex + 1}`;
+
+          return (
+            <section class="career-study-plan__year">
+              <button
+                class="career-study-plan__year-button"
+                type="button"
+                aria-expanded={yearIndex === 0 ? 'true' : 'false'}
+                aria-controls={yearId}
+                data-study-year-toggle
+              >
+                <span class="career-study-plan__year-title">{year.title}</span>
+                <span class="career-study-plan__year-meta">{year.subjects.length} materias</span>
+                <span class="career-study-plan__year-icon" aria-hidden="true">⌄</span>
+              </button>
+
+              <div class="career-study-plan__subjects" id={yearId} hidden={yearIndex !== 0}>
+                {year.subjects.map((subject) => (
+                  <div class="career-study-plan__subject">
+                    <span class="career-study-plan__subject-name">{subject.name}</span>
+                    {subject.hours && <span class="career-study-plan__subject-hours">{subject.hours}</span>}
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </>
+  ) : (
+    <p class="career-study-plan__empty">
+      El plan de estudios se publicará cuando se disponga de información oficialmente confirmada.
+    </p>
+  )}
+</div>
+
+<script is:inline>
+  const initCareerStudyPlans = () => {
+    document.querySelectorAll('[data-career-study-plan]').forEach((root) => {
+      if (root.dataset.initialized === 'true') return;
+      root.dataset.initialized = 'true';
+
+      const planButton = root.querySelector('[data-study-plan-toggle]');
+
+      planButton?.addEventListener('click', () => {
+        const targetId = planButton.getAttribute('aria-controls');
+        const target = targetId ? document.getElementById(targetId) : null;
+        if (!target) return;
+
+        const isOpen = planButton.getAttribute('aria-expanded') === 'true';
+        planButton.setAttribute('aria-expanded', String(!isOpen));
+        target.hidden = isOpen;
+      });
+
+      root.querySelectorAll('[data-study-year-toggle]').forEach((yearButton) => {
+        yearButton.addEventListener('click', () => {
+          const targetId = yearButton.getAttribute('aria-controls');
+          const target = targetId ? document.getElementById(targetId) : null;
+          if (!target) return;
+
+          const isOpen = yearButton.getAttribute('aria-expanded') === 'true';
+          yearButton.setAttribute('aria-expanded', String(!isOpen));
+          target.hidden = isOpen;
+        });
+      });
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCareerStudyPlans);
+  } else {
+    initCareerStudyPlans();
+  }
+</script>
+
+<style>
+  .career-study-plan {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .career-study-plan__toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3rem;
+    padding: .85rem 1.1rem;
+    border: 1px solid var(--color-button-primary-bg);
+    border-radius: var(--radius-md);
+    background: var(--color-button-primary-bg);
+    color: var(--color-button-primary-text);
+    font: inherit;
+    font-weight: 900;
+    cursor: pointer;
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .career-study-plan__toggle:hover {
+    border-color: var(--color-button-primary-hover-bg);
+    background: var(--color-button-primary-hover-bg);
+    transform: translateY(-1px);
+  }
+
+  .career-study-plan__toggle-icon,
+  .career-study-plan__year-icon {
+    transition: transform var(--transition-base);
+  }
+
+  .career-study-plan__toggle[aria-expanded='true'] .career-study-plan__toggle-icon,
+  .career-study-plan__year-button[aria-expanded='true'] .career-study-plan__year-icon {
+    transform: rotate(180deg);
+  }
+
+  .career-study-plan__panel {
+    display: grid;
+    gap: .75rem;
+    padding: 1rem;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-body);
+  }
+
+  .career-study-plan__year {
+    overflow: hidden;
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .career-study-plan__year-button {
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: .75rem;
+    align-items: center;
+    padding: 1rem;
+    border: 0;
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color var(--transition-base);
+  }
+
+  .career-study-plan__year-button:hover {
+    background: var(--color-hover-primary);
+  }
+
+  .career-study-plan__year-title {
+    font-weight: 900;
+  }
+
+  .career-study-plan__year-meta {
+    color: var(--color-text-secondary);
+    font-size: .85rem;
+    font-weight: 700;
+  }
+
+  .career-study-plan__year-icon {
+    color: var(--color-secondary);
+  }
+
+  .career-study-plan__subjects {
+    border-top: 1px solid var(--color-border-soft);
+  }
+
+  .career-study-plan__subject {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .8rem 1rem;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+
+  .career-study-plan__subject:last-child {
+    border-bottom: 0;
+  }
+
+  .career-study-plan__subject-name {
+    color: var(--color-text-primary);
+    line-height: 1.4;
+  }
+
+  .career-study-plan__subject-hours {
+    flex: 0 0 auto;
+    padding: .2rem .55rem;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    color: var(--color-primary);
+    font-size: .8rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .career-study-plan__empty {
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-surface-soft);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 560px) {
+    .career-study-plan__year-button,
+    .career-study-plan__subject {
+      align-items: flex-start;
+      grid-template-columns: 1fr auto;
+    }
+
+    .career-study-plan__year-meta {
+      grid-column: 1 / -1;
+    }
+
+    .career-study-plan__subject {
+      flex-direction: column;
+    }
+  }
+</style>

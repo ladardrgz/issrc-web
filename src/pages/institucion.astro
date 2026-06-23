@@ -1,18 +1,1148 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import InstitutionalSidebar from '../components/InstitutionalSidebar.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import InstitutionalSidebar from "../components/InstitutionalSidebar.astro";
+
+const valoresInstitucionales = [
+  "El reconocimiento de la educación como un derecho universal básico.",
+  "El respeto por los derechos individuales.",
+  "El reconocimiento de la diversidad en todos sus aspectos.",
+  "La igualdad de oportunidades para aprender.",
+  "La promoción de la autorresponsabilidad, el autoaprendizaje y el aprendizaje cooperativo y colaborativo.",
+  "La fortaleza de la interdisciplinariedad como modelo de abordaje y de intervención.",
+  "La adecuación de la planeación educativa y las acciones a las necesidades loco-regionales de la población, las instituciones y la sociedad.",
+  "La producción de conocimiento y la formación y capacitación del recurso humano como capital social indispensable del desarrollo social.",
+  "El cuidado y protección del medio ambiente.",
+  "La instalación de diferentes estrategias orientadas al aprendizaje significativo.",
+  "La mejora continua en la calidad educativa, a través de la innovación y la creatividad.",
+  "La formación docente como uno de los pilares esenciales de la mejora continua.",
+];
+
+const finesInstitucionales = [
+  "Organizar e impartir educación técnica superior, de actualización de postgrado universitario y a la comunidad, mediante diferentes estrategias de enseñanza y modalidades presenciales o a distancia.",
+  "Contribuir al mejoramiento de la calidad de vida de la comunidad, transfiriendo conocimiento y tecnologías para elevar el nivel sociocultural, científico, político y económico.",
+  "Promover la formación de personas reflexivas y críticas, respetuosas del orden institucional y democrático, con valores éticos y solidarios.",
+  "Hacer de la equidad una herramienta de transformación y búsqueda de mecanismos de distribución de oportunidades concretas de formación.",
+  "Organizar y desarrollar actividades de generación y sistematización de conocimientos, priorizando necesidades y problemáticas locales.",
+  "Organizar, coordinar y desarrollar programas de cooperación comunitaria, servicio público, preservación y difusión de la cultura.",
+  "Promover acciones tendientes al desarrollo socioeconómico local, provincial, regional y nacional, y a la preservación del medio ambiente.",
+  "Promover la igualdad de oportunidades en cuestiones de género.",
+  "Promover la memoria activa sobre científicos, pensadores, artistas y personalidades destacadas del quehacer nacional.",
+  "Establecer compromisos permanentes de articulación y cooperación con organismos públicos, organizaciones sociales, asociaciones profesionales, sindicales y empresarias.",
+  "Coordinar con universidades, actores educativos y el sistema educativo provincial acciones orientadas a resolver necesidades provinciales, regionales y nacionales.",
+  "Promover y proveer al progreso de las ciencias de la salud y el ambiente.",
+  "Promover enfoques integradores, partiendo de la diversidad y el pluralismo.",
+  "Estimular la actualización y el perfeccionamiento permanente mediante el autoaprendizaje, el esfuerzo individual y el trabajo colaborativo.",
+  "Promover el equilibrio entre las tradiciones y las innovaciones, y entre el desarrollo armónico de la mente y el cuerpo.",
+  "Promover la formación y actualización técnica superior y de postgrado en ciencias de la salud y del ambiente.",
+  "Estimular la investigación básica y aplicada en problemas del proceso salud-enfermedad, patologías prevalentes y regionales, respetando principios bioéticos y derechos ciudadanos.",
+  "Promover, respetar y considerar especialmente los contenidos culturales, usos y costumbres de la comunidad en general y de los pueblos originarios en particular.",
+];
+
+// Dos carriles para el carrusel de fines, desplazándose en direcciones opuestas.
+const finesLaneA = finesInstitucionales.slice(0, 9);
+const finesLaneB = finesInstitucionales.slice(9);
 ---
-<MainLayout title="Institución" description="Conocé la historia, misión, visión y valores del Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación HAC en Formosa.">
-  <Breadcrumbs items={[{label:'Institución'}]} />
-  <section class="page-hero"><div class="container"><span class="eyebrow">Institución</span><h1>Educación sanitaria al servicio de la comunidad</h1><p class="lead">Conocé los principios, la organización y el recorrido del Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación HAC.</p></div></section>
-  <section class="section"><div class="container editorial-shell"><div class="editorial-main split"><div class="prose"><span class="eyebrow">Historia</span><h2>Una trayectoria vinculada con la formación sanitaria</h2><p class="lead">[Reseña histórica oficial de la institución]</p><p>Este bloque está preparado para presentar hitos, antecedentes y evolución institucional sin recurrir a cifras o fechas no verificadas.</p></div><div class="placeholder-media"><div><strong>[Imagen institucional histórica]</strong><p>Fotografía y referencia documental a confirmar.</p></div></div></div><InstitutionalSidebar title="Institución" links={[{label:'Historia',href:'#historia'},{label:'Misión y visión',href:'#mision'},{label:'Autoridades',href:'#autoridades'},{label:'Fundación HAC',href:'#fundacion'},{label:'Convenios',href:'#convenios'}]} /></div></section>
-  <section class="section section--soft"><div class="container"><div class="grid grid--2"><article class="principle"><span>01</span><h2>Misión</h2><p>[Declaración oficial de la misión institucional]</p></article><article class="principle"><span>02</span><h2>Visión</h2><p>[Declaración oficial de la visión institucional]</p></article></div></div></section>
-  <section class="section"><div class="container"><SectionHeader eyebrow="Identidad" title="Valores institucionales" description="Principios que orientan la actividad académica y el vínculo con la comunidad."/><div class="grid grid--3">{['[Valor institucional]','[Valor institucional]','[Valor institucional]'].map((value,index)=><article class="card"><span class="card__icon">{String(index+1).padStart(2,'0')}</span><h3>{value}</h3><p>[Descripción oficial del valor]</p></article>)}</div></div></section>
-  <section class="section section--dark"><div class="container"><SectionHeader eyebrow="Propósito" title="Fines institucionales" description="[Presentación oficial de los fines educativos, sanitarios y comunitarios]"/><div class="purpose-list"><p>01 · [Fin institucional a confirmar]</p><p>02 · [Fin institucional a confirmar]</p><p>03 · [Fin institucional a confirmar]</p></div></div></section>
-  <section class="section"><div class="container"><SectionHeader eyebrow="Organización" title="Autoridades" description="Equipo responsable de la conducción institucional."/><div class="grid grid--3">{['[Nombre de autoridad]','[Nombre de autoridad]','[Nombre de autoridad]'].map((name)=><article class="card"><span class="card__icon" aria-hidden="true">○</span><h3>{name}</h3><p>[Cargo institucional]</p></article>)}</div></div></section>
-  <section class="section section--soft" id="fundacion"><div class="container split"><div><span class="eyebrow">Fundación HAC</span><h2>Marco institucional</h2><p class="lead">[Información oficial sobre Fundación HAC y su relación con el Instituto]</p></div><div class="card"><h3>Documentación institucional</h3><p>[Resoluciones, reconocimientos y documentación pública disponible]</p><span class="text-link">Documentación pendiente de publicación</span></div></div></section>
-  <section class="section" id="convenios"><div class="container"><SectionHeader eyebrow="Vinculación" title="Convenios y reconocimientos" description="Acuerdos y antecedentes que fortalecen la actividad institucional."/><div class="empty-state"><h3>Información a confirmar</h3><p>Los convenios se publicarán cuando se disponga de documentación oficial.</p></div></div></section>
+
+<MainLayout
+  title="Institución"
+  description="Conocé la historia, misión, visión y valores del Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación HAC en Formosa."
+>
+  <Breadcrumbs items={[{ label: "Institución" }]} />
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Institución</span>
+      <h1>Educación sanitaria al servicio de la comunidad</h1>
+      <p class="lead">
+        Conocé los principios, la organización y el recorrido del Instituto
+        Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación HAC.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="historia">
+    <div class="container editorial-shell">
+      <div class="editorial-main split">
+        <div class="prose">
+          <span class="eyebrow">Historia</span>
+          <h2>Una trayectoria vinculada con la formación sanitaria</h2>
+          <p class="lead">
+            [Reseña histórica oficial de la institución]
+          </p>
+          <p>
+            Este bloque está preparado para presentar hitos, antecedentes y
+            evolución institucional sin recurrir a cifras o fechas no
+            verificadas.
+          </p>
+        </div>
+
+        <div class="placeholder-media">
+          <div>
+            <strong>[Imagen institucional histórica]</strong>
+            <p>Fotografía y referencia documental a confirmar.</p>
+          </div>
+        </div>
+      </div>
+
+      <InstitutionalSidebar
+        title="Institución"
+        links={[
+          { label: "Historia", href: "#historia" },
+          { label: "Misión y visión", href: "#mision" },
+          { label: "Valores", href: "#valores" },
+          { label: "Fines institucionales", href: "#fines" },
+          { label: "Autoridades", href: "#autoridades" },
+          { label: "Fundación HAC", href: "#fundacion" },
+          { label: "Convenios", href: "#convenios" },
+        ]}
+      />
+    </div>
+  </section>
+
+  <section class="section identity-section" id="mision">
+    <div class="container">
+      <div class="identity-intro">
+        <span class="eyebrow">Identidad institucional</span>
+        <h2>Misión y visión</h2>
+        <p>
+          Una propuesta educativa orientada a la formación sanitaria, ambiental
+          y comunitaria, con compromiso territorial, calidad académica y
+          responsabilidad social.
+        </p>
+      </div>
+
+      <div class="identity-showcase">
+        <article class="identity-card identity-card--mission">
+          <div class="identity-card__media">
+            <img
+              src="/images/institution/mision.png"
+              alt="Referencia visual para la misión institucional"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="identity-card__content">
+            <span class="identity-card__tag">Propósito institucional</span>
+            <h3>Misión</h3>
+
+            <p>
+              La misión primaria es contribuir, a través de la producción y
+              distribución del conocimiento en salud y el medio ambiente, de
+              innovaciones científico-tecnológicas, al desarrollo económico,
+              social y cultural de la provincia, a fin de mejorar su calidad de
+              vida y fortalecer los valores democráticos en el conjunto de la
+              sociedad, articulando el conocimiento universal con los saberes
+              producidos por nuestra comunidad.
+            </p>
+
+            <p>
+              Se prioriza la articulación y cooperación entre los distintos
+              productores del saber, la transformación de la información en
+              conocimiento y, en su tarea hermenéutica y axiológica, atender a
+              las demandas sociales.
+            </p>
+
+            <p>
+              La misión del Instituto es crear en el ámbito de la Provincia de
+              Formosa un espacio destinado a la formación, capacitación
+              permanente y actualización específica de recursos humanos
+              esenciales para el desarrollo de la provincia, con especial
+              énfasis en las áreas de la salud y el ambiente.
+            </p>
+
+            <p>
+              Esta misión se basa en los principios de respeto por los derechos,
+              la igualdad de oportunidades y la implementación de estrategias de
+              enseñanza que promuevan la autorresponsabilidad, el aprendizaje
+              significativo, colaborativo y cooperativo, con el fin de evitar el
+              desarraigo del territorio provincial, reconociendo la diversidad
+              humana y rescatando la cultura, las creencias y la historia
+              vivencial del lugar.
+            </p>
+          </div>
+        </article>
+
+        <article class="identity-card identity-card--vision">
+          <div class="identity-card__media">
+            <img
+              src="/images/institution/vision.png"
+              alt="Referencia visual para la visión institucional"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="identity-card__content">
+            <span class="identity-card__tag">Horizonte institucional</span>
+            <h3>Visión</h3>
+
+            <p>
+              La visión del Instituto es convertirse en un espacio educativo
+              amplio, participativo, sustentable, de calidad y excelencia
+              tecno-profesional, que incorpore de manera paulatina a lo largo
+              de su historia la oferta académica, tanto en el número de
+              matrícula como en la diversidad temática.
+            </p>
+
+            <p>
+              Su propósito es constituirse en un punto de referencia de la
+              formación técnica superior de la provincia, la actualización
+              profesional y la educación para y con la comunidad.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section values-section" id="valores">
+    <div class="container values-layout">
+      <div class="values-visual">
+        <img
+          src="/images/institution/valores.png"
+          alt="Referencia visual para los valores institucionales"
+          loading="lazy"
+        />
+        <span class="values-visual__count">
+          {valoresInstitucionales.length} principios
+        </span>
+      </div>
+
+      <div class="values-content">
+        <span class="eyebrow">Identidad</span>
+        <h2>Valores institucionales</h2>
+        <p class="lead">
+          Principios que orientan la actividad académica, el vínculo con la
+          comunidad y el compromiso con el desarrollo humano, sanitario y
+          ambiental.
+        </p>
+
+        <div class="values-list">
+          {
+            valoresInstitucionales.map((value, index) => (
+              <article class={`value-pill value-pill--${(index % 3) + 1}`}>
+                <p>{value}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section purposes-section" id="fines">
+    <div class="container">
+      <div class="purposes-header">
+        <div>
+          <span class="eyebrow">Propósito</span>
+          <h2>Fines institucionales</h2>
+          <p>
+            Objetivos educativos, sanitarios, comunitarios y científicos del
+            Instituto Superior de Sanidad Ramón Carrillo.
+          </p>
+        </div>
+
+        <div class="purposes-header__image">
+          <img
+            src="/images/institution/fines.png"
+            alt="Referencia visual para los fines institucionales"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="fines-marquee"
+      role="region"
+      aria-label="Fines institucionales — desplazamiento continuo, podés pasar el cursor para pausar"
+    >
+      <div class="marquee-row marquee-row--a">
+        <div class="marquee-track">
+          <div class="marquee-set">
+            {
+              finesLaneA.map((fin) => (
+                <article class="purpose-card">
+                  <span class="purpose-card__mark" aria-hidden="true" />
+                  <p>{fin}</p>
+                </article>
+              ))
+            }
+          </div>
+          <div class="marquee-set" aria-hidden="true">
+            {
+              finesLaneA.map((fin) => (
+                <article class="purpose-card">
+                  <span class="purpose-card__mark" aria-hidden="true" />
+                  <p>{fin}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="marquee-row marquee-row--b">
+        <div class="marquee-track">
+          <div class="marquee-set">
+            {
+              finesLaneB.map((fin) => (
+                <article class="purpose-card">
+                  <span class="purpose-card__mark" aria-hidden="true" />
+                  <p>{fin}</p>
+                </article>
+              ))
+            }
+          </div>
+          <div class="marquee-set" aria-hidden="true">
+            {
+              finesLaneB.map((fin) => (
+                <article class="purpose-card">
+                  <span class="purpose-card__mark" aria-hidden="true" />
+                  <p>{fin}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="autoridades">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Organización"
+        title="Autoridades"
+        description="Equipo responsable de la conducción institucional."
+      />
+
+      <div class="grid grid--3">
+        {
+          [
+            "[Nombre de autoridad]",
+            "[Nombre de autoridad]",
+            "[Nombre de autoridad]",
+          ].map((name) => (
+            <article class="card">
+              <>
+                <span class="card__icon" aria-hidden="true">
+                  ○
+                </span>
+                <h3>{name}</h3>
+                <p>[Cargo institucional]</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="fundacion">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Fundación HAC</span>
+        <h2>Marco institucional</h2>
+        <p class="lead">
+          [Información oficial sobre Fundación HAC y su relación con el
+          Instituto]
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Documentación institucional</h3>
+        <p>
+          [Resoluciones, reconocimientos y documentación pública disponible]
+        </p>
+        <span class="text-link">Documentación pendiente de publicación</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="convenios">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Vinculación"
+        title="Convenios y reconocimientos"
+        description="Acuerdos y antecedentes que fortalecen la actividad institucional."
+      />
+
+      <div class="empty-state">
+        <h3>Información a confirmar</h3>
+        <p>
+          Los convenios se publicarán cuando se disponga de documentación
+          oficial.
+        </p>
+      </div>
+    </div>
+  </section>
 </MainLayout>
-<style>.principle{min-height:300px;padding:2.2rem;border-radius:var(--radius);background:var(--white)}.principle span{color:var(--mint);font-weight:800}.principle h2{margin-top:3rem}.principle p{margin-top:1rem;color:var(--muted)}.purpose-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.purpose-list p{padding:1.5rem;border:1px solid rgba(255,255,255,.15);border-radius:var(--radius);color:#d2e0d8}@media(max-width:700px){.purpose-list{grid-template-columns:1fr}}</style>
+
+<style>
+  .identity-section {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at top left,
+        color-mix(in srgb, var(--color-accent) 20%, transparent),
+        transparent 30rem
+      ),
+      linear-gradient(
+        180deg,
+        var(--color-bg-body) 0%,
+        var(--color-bg-section) 100%
+      );
+  }
+
+  .identity-section::before {
+    position: absolute;
+    top: 4rem;
+    right: -9rem;
+    width: 26rem;
+    height: 26rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 38%, transparent);
+    border-radius: 999px;
+    content: "";
+  }
+
+  .identity-section::after {
+    position: absolute;
+    bottom: -10rem;
+    left: -8rem;
+    width: 24rem;
+    height: 24rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+    content: "";
+  }
+
+  .identity-intro {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin-bottom: var(--space-block);
+  }
+
+  .identity-intro h2,
+  .values-content h2,
+  .purposes-header h2 {
+    margin: .45rem 0 1rem;
+    color: var(--color-primary);
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .identity-intro p,
+  .purposes-header p {
+    max-width: 720px;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.75;
+  }
+
+  .identity-showcase {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .identity-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(240px, .42fr) minmax(0, 1fr);
+    gap: var(--space-column-gap);
+    align-items: center;
+    overflow: hidden;
+    padding: clamp(1.2rem, 3vw, 2.2rem);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-card-bg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .identity-card--vision {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, .42fr);
+    background:
+      linear-gradient(
+        135deg,
+        var(--color-primary) 0%,
+        color-mix(in srgb, var(--color-primary) 82%, var(--color-accent)) 100%
+      );
+  }
+
+  .identity-card--vision .identity-card__media {
+    order: 2;
+  }
+
+  .identity-card--vision .identity-card__content {
+    order: 1;
+  }
+
+  .identity-card::before {
+    position: absolute;
+    inset: auto 2rem 2rem auto;
+    width: 9rem;
+    height: 9rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+    content: "";
+  }
+
+  .identity-card--mission::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: .5rem;
+    background: var(--color-secondary);
+    content: "";
+  }
+
+  .identity-card--vision::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: .5rem;
+    background: var(--color-accent);
+    content: "";
+  }
+
+  .identity-card__media {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    min-height: clamp(220px, 28vw, 280px);
+    place-items: center;
+    border-radius: calc(var(--radius-xl) - .35rem);
+    background:
+      radial-gradient(
+        circle,
+        color-mix(in srgb, var(--color-accent) 18%, transparent),
+        transparent 68%
+      ),
+      var(--color-bg-surface-soft);
+  }
+
+  .identity-card--vision .identity-card__media {
+    background:
+      radial-gradient(
+        circle,
+        color-mix(in srgb, var(--color-accent) 34%, transparent),
+        transparent 70%
+      ),
+      color-mix(in srgb, var(--color-bg-surface) 8%, transparent);
+  }
+
+  .identity-card__media img {
+    width: min(78%, 320px);
+    max-height: 300px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 32px rgba(21, 58, 91, .16));
+  }
+
+  .identity-card__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .identity-card__tag {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 1rem;
+    padding: .45rem .75rem;
+    border: 1px solid color-mix(in srgb, var(--color-secondary) 32%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+    color: var(--color-primary);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .identity-card--vision .identity-card__tag {
+    border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    color: var(--color-text-inverse);
+  }
+
+  .identity-card h3 {
+    margin: 0 0 1.15rem;
+    color: var(--color-primary);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: .95;
+    letter-spacing: -0.05em;
+  }
+
+  .identity-card--vision h3 {
+    color: var(--color-text-inverse);
+  }
+
+  .identity-card p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: clamp(.98rem, 1.3vw, 1.05rem);
+    line-height: 1.75;
+  }
+
+  .identity-card p + p {
+    margin-top: 1rem;
+  }
+
+  .identity-card--vision p {
+    color: var(--color-text-inverse-soft);
+  }
+
+  /* ---------- Valores institucionales ---------- */
+
+  .values-section {
+    background: var(--color-bg-body);
+  }
+
+  .values-layout {
+    display: grid;
+    grid-template-columns: minmax(260px, .38fr) minmax(0, 1fr);
+    gap: var(--space-column-gap);
+    align-items: start;
+  }
+
+  .values-visual {
+    position: sticky;
+    top: 6rem;
+    display: grid;
+    min-height: clamp(260px, 32vw, 340px);
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(
+        circle at center,
+        color-mix(in srgb, var(--color-secondary) 16%, transparent),
+        transparent 68%
+      ),
+      linear-gradient(
+        145deg,
+        var(--color-bg-surface) 0%,
+        var(--color-bg-surface-soft) 100%
+      );
+    box-shadow: var(--shadow-md);
+  }
+
+  .values-visual::before {
+    position: absolute;
+    inset: 1.2rem;
+    border: 1px dashed color-mix(in srgb, var(--color-accent) 48%, transparent);
+    border-radius: calc(var(--radius-xl) - .45rem);
+    content: "";
+  }
+
+  .values-visual img {
+    position: relative;
+    z-index: 1;
+    width: min(76%, 320px);
+    max-height: 340px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 32px rgba(21, 58, 91, .14));
+  }
+
+  .values-visual__count {
+    position: absolute;
+    z-index: 2;
+    right: 1.1rem;
+    bottom: 1.1rem;
+    padding: .4rem .85rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-text-inverse);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+  }
+
+  .values-content .lead {
+    max-width: 760px;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .values-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .85rem;
+  }
+
+  .value-pill {
+    position: relative;
+    padding: 1.05rem 1.1rem 1.05rem 1.4rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-md);
+    background: var(--color-card-bg);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color .2s ease,
+      box-shadow .2s ease,
+      transform .2s ease;
+  }
+
+  .value-pill::before {
+    position: absolute;
+    top: .9rem;
+    bottom: .9rem;
+    left: 0;
+    width: .28rem;
+    border-radius: 999px;
+    content: "";
+  }
+
+  .value-pill--1::before {
+    background: var(--color-secondary);
+  }
+
+  .value-pill--2::before {
+    background: var(--color-accent);
+  }
+
+  .value-pill--3::before {
+    background: var(--color-primary);
+  }
+
+  .value-pill:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .value-pill p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: .96rem;
+    line-height: 1.6;
+  }
+
+  /* ---------- Fines institucionales (carrusel) ---------- */
+
+  .purposes-section {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-primary);
+  }
+
+  .purposes-section::before {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at top right,
+        color-mix(in srgb, var(--color-accent) 28%, transparent),
+        transparent 34rem
+      ),
+      radial-gradient(
+        circle at bottom left,
+        color-mix(in srgb, var(--color-secondary) 18%, transparent),
+        transparent 32rem
+      );
+    content: "";
+  }
+
+  .purposes-section > .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .purposes-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, .28fr);
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: var(--space-block);
+  }
+
+  .purposes-header h2,
+  .purposes-header p {
+    color: var(--color-text-inverse);
+  }
+
+  .purposes-header p {
+    color: var(--color-text-inverse-soft);
+  }
+
+  .purposes-header__image {
+    display: grid;
+    min-height: 220px;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--color-bg-surface) 18%, transparent);
+    border-radius: var(--radius-xl);
+    background: color-mix(in srgb, var(--color-bg-surface) 8%, transparent);
+  }
+
+  .purposes-header__image img {
+    width: min(78%, 220px);
+    max-height: 190px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 32px rgba(0, 0, 0, .18));
+  }
+
+  .fines-marquee {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: clamp(1.5rem, 4vw, 2.5rem);
+    padding-bottom: .25rem;
+  }
+
+  .marquee-row {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      black 6%,
+      black 94%,
+      transparent
+    );
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee-set {
+    display: flex;
+    flex-shrink: 0;
+    gap: 1rem;
+    padding: 0 .5rem;
+  }
+
+  .marquee-row--a .marquee-track {
+    animation: marquee-left 80s linear infinite;
+  }
+
+  .marquee-row--b .marquee-track {
+    animation: marquee-right 100s linear infinite;
+  }
+
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .fines-marquee:hover .marquee-track,
+  .fines-marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .purpose-card {
+    flex-shrink: 0;
+    width: min(82vw, 300px);
+    padding: 1.15rem;
+    border: 1px solid color-mix(in srgb, var(--color-bg-surface) 18%, transparent);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-bg-surface) 7%, transparent);
+  }
+
+  .purpose-card__mark {
+    display: block;
+    width: 2.5rem;
+    height: .22rem;
+    margin-bottom: .9rem;
+    border-radius: 999px;
+    background: var(--color-accent);
+  }
+
+  .purpose-card p {
+    margin: 0;
+    color: var(--color-text-inverse-soft);
+    font-size: .94rem;
+    line-height: 1.65;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    .marquee-row {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .marquee-set[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .identity-card,
+    .identity-card--vision,
+    .values-layout,
+    .purposes-header {
+      grid-template-columns: 1fr;
+    }
+
+    .identity-card--vision .identity-card__media,
+    .identity-card--vision .identity-card__content {
+      order: initial;
+    }
+
+    .values-visual {
+      position: relative;
+      top: auto;
+      min-height: 280px;
+    }
+  }
+
+  @media (min-width: 1180px) {
+    .values-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .identity-card {
+      padding: 1rem;
+      border-radius: var(--radius-lg);
+    }
+
+    .identity-card__media {
+      min-height: 220px;
+    }
+
+    .identity-card__media img {
+      width: min(82%, 240px);
+    }
+
+    .values-list {
+      grid-template-columns: 1fr;
+    }
+
+    .purpose-card {
+      width: min(78vw, 260px);
+    }
+
+    .marquee-row--a .marquee-track {
+      animation-duration: 55s;
+    }
+
+    .marquee-row--b .marquee-track {
+      animation-duration: 70s;
+    }
+  }
+
+  /* Ajuste editorial: secciones sobrias tipo periódico institucional. */
+  .identity-card__media {
+    min-height: clamp(160px, 22vw, 220px);
+  }
+
+  .identity-card__media img {
+    width: min(58%, 180px);
+    max-height: 180px;
+  }
+
+  .values-section,
+  .purposes-section {
+    background: var(--color-bg-body);
+  }
+
+  .purposes-section::before,
+  .values-visual::before {
+    display: none;
+  }
+
+  .values-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .values-visual {
+    position: relative;
+    top: auto;
+    min-height: auto;
+    justify-items: start;
+    padding: 1rem 0;
+    border: 0;
+    border-block: 1px solid var(--color-border-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .values-visual img {
+    width: 92px;
+    max-height: 92px;
+    filter: none;
+    opacity: .82;
+  }
+
+  .values-visual__count {
+    right: auto;
+    bottom: 1rem;
+    left: 6.5rem;
+    background: transparent;
+    box-shadow: none;
+    color: var(--color-text-secondary);
+  }
+
+  .values-list {
+    display: block;
+    column-count: 2;
+    column-gap: var(--space-column-gap);
+    padding-top: .5rem;
+  }
+
+  .value-pill {
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 1rem;
+    break-inside: avoid;
+    padding: 0 0 1rem;
+    border: 0;
+    border-bottom: 1px solid var(--color-border-soft);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .value-pill::before {
+    display: none;
+  }
+
+  .value-pill:hover {
+    border-color: var(--color-border-soft);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .value-pill p {
+    color: var(--color-text-primary);
+  }
+
+  .purposes-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-stack-gap);
+  }
+
+  .purposes-header h2,
+  .purposes-header p {
+    color: var(--color-text-primary);
+  }
+
+  .purposes-header p {
+    color: var(--color-text-secondary);
+  }
+
+  .purposes-header__image {
+    min-height: auto;
+    width: 120px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .purposes-header__image img {
+    width: 92px;
+    max-height: 92px;
+    filter: none;
+    opacity: .82;
+  }
+
+  .fines-marquee {
+    display: block;
+    margin-top: var(--space-block);
+  }
+
+  .marquee-row {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .marquee-row + .marquee-row {
+    margin-top: 0;
+  }
+
+  .marquee-track,
+  .marquee-row--a .marquee-track,
+  .marquee-row--b .marquee-track {
+    display: block;
+    width: auto;
+    animation: none;
+    transform: none;
+  }
+
+  .marquee-set {
+    display: block;
+    columns: 2 280px;
+    column-gap: var(--space-column-gap);
+    padding: 0;
+  }
+
+  .marquee-set[aria-hidden="true"] {
+    display: none;
+  }
+
+  .purpose-card {
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 1rem;
+    break-inside: avoid;
+    padding: 0 0 1rem;
+    border: 0;
+    border-bottom: 1px solid var(--color-border-soft);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .purpose-card__mark {
+    width: 2rem;
+    height: 2px;
+    margin-bottom: .65rem;
+    background: var(--color-neutral);
+  }
+
+  .purpose-card p {
+    color: var(--color-text-primary);
+  }
+
+  @media (max-width: 760px) {
+    .values-list,
+    .marquee-set {
+      columns: 1;
+    }
+
+    .purposes-header {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

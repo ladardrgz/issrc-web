@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#0B2B26"/>
-  <circle cx="1030" cy="90" r="300" fill="#163832"/>
-  <circle cx="1030" cy="90" r="190" fill="#235347"/>
-  <text x="90" y="250" fill="#8EB69B" font-family="Arial,sans-serif" font-size="34">INSTITUTO SUPERIOR DE SANIDAD</text>
-  <text x="90" y="335" fill="#fff" font-family="Arial,sans-serif" font-size="62" font-weight="700">Prof. Dr. Ramón Carrillo</text>
-  <text x="90" y="400" fill="#c9d8ce" font-family="Arial,sans-serif" font-size="32">Fundación HAC · Formosa</text>
+  <rect width="1200" height="630" fill="#153A5B"/>
+  <circle cx="1030" cy="90" r="300" fill="#0F2A42"/>
+  <circle cx="1030" cy="90" r="190" fill="#2BAE66"/>
+  <text x="90" y="250" fill="#7EC8E3" font-family="Arial,sans-serif" font-size="34">INSTITUTO SUPERIOR DE SANIDAD</text>
+  <text x="90" y="335" fill="#F9FBFC" font-family="Arial,sans-serif" font-size="62" font-weight="700">Prof. Dr. Ramón Carrillo</text>
+  <text x="90" y="400" fill="#D8EAF1" font-family="Arial,sans-serif" font-size="32">Fundación HAC · Formosa</text>
 </svg>

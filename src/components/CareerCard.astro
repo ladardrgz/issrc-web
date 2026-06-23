@@ -1,16 +1,148 @@
 ---
 import type { Career } from '../data/careers';
+
 const { career } = Astro.props as { career: Career };
+const title = career.shortTitle ?? career.title;
 ---
+
 <article class="career-card">
-  <div class="career-card__top"><span class="badge">{career.level}</span><span>{career.modality}</span></div>
-  <h3>{career.name}</h3><p>{career.description}</p>
-  <dl><div><dt>Duración</dt><dd>{career.duration}</dd></div><div><dt>Rol profesional</dt><dd>{career.graduateRole}</dd></div></dl>
-  <div class="career-card__actions"><a class="button" href={`/carreras/${career.slug}/`}>Ver carrera</a><a class="text-link" href={`/contacto/?carrera=${encodeURIComponent(career.name)}`}>Consultar inscripción →</a></div>
+  <div class="career-card__top">
+    <span class="career-card__badge">{career.duration}</span>
+    <span>{career.modality}</span>
+  </div>
+
+  <h3>{title}</h3>
+  <p>{career.description}</p>
+
+  <dl class="career-card__facts">
+    <div>
+      <dt>Duración</dt>
+      <dd>{career.duration}</dd>
+    </div>
+    <div>
+      <dt>Modalidad</dt>
+      <dd>{career.modality}</dd>
+    </div>
+  </dl>
+
+  <div class="career-card__actions">
+    <a class="career-card__button" href={`/carreras/${career.slug}/`}>Ver carrera</a>
+    <a class="career-card__link" href={`/contacto/?carrera=${encodeURIComponent(career.title)}`}>Consultar inscripción →</a>
+  </div>
 </article>
+
 <style>
-  .career-card { display: flex; height: 100%; min-height: 440px; flex-direction: column; padding: 1.7rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); transition: transform .2s, box-shadow .2s; }.career-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
-  .career-card__top { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: 2rem; color: var(--muted); font-size: .8rem; }.career-card h3 { font-size: 1.45rem; }.career-card > p { margin-top: .8rem; color: var(--muted); }
-  dl { display: grid; gap: .8rem; margin: 1.5rem 0 0; padding-top: 1.2rem; border-top: 1px solid var(--line); }dt { color: var(--muted); font-size: .74rem; text-transform: uppercase; }dd { margin: .15rem 0 0; font-weight: 600; }
-  .career-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.2rem; margin-top: auto; padding-top: 1.5rem; }.career-card__actions .text-link { margin: 0; font-size: .85rem; }
+  .career-card {
+    display: flex;
+    height: 100%;
+    min-height: 360px;
+    flex-direction: column;
+    padding: 1.7rem;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-card-bg);
+    box-shadow: var(--shadow-sm);
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .career-card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
+
+  .career-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    margin-bottom: 1.6rem;
+    color: var(--color-text-secondary);
+    font-size: .8rem;
+  }
+
+  .career-card__badge {
+    display: inline-flex;
+    padding: .3rem .7rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-secondary) 14%, transparent);
+    color: var(--color-primary);
+    font-weight: 800;
+  }
+
+  .career-card h3 {
+    color: var(--color-primary);
+    font-size: 1.45rem;
+  }
+
+  .career-card > p {
+    margin-top: .8rem;
+    color: var(--color-text-secondary);
+  }
+
+  .career-card__facts {
+    display: grid;
+    gap: .8rem;
+    margin: 1.5rem 0 0;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--color-border-soft);
+  }
+
+  .career-card__facts dt {
+    color: var(--color-text-secondary);
+    font-size: .74rem;
+    text-transform: uppercase;
+  }
+
+  .career-card__facts dd {
+    margin: .15rem 0 0;
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  .career-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .8rem 1.2rem;
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  .career-card__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: .6rem 1rem;
+    border: 1px solid var(--color-button-primary-bg);
+    border-radius: 999px;
+    background: var(--color-button-primary-bg);
+    color: var(--color-button-primary-text);
+    font-weight: 800;
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .career-card__button:hover {
+    border-color: var(--color-button-primary-hover-bg);
+    background: var(--color-button-primary-hover-bg);
+    transform: translateY(-1px);
+  }
+
+  .career-card__link {
+    color: var(--color-link-hover);
+    font-size: .85rem;
+    font-weight: 800;
+  }
+
+  .career-card__link:hover {
+    text-decoration: underline;
+    text-underline-offset: .25rem;
+  }
 </style>

@@ -1,34 +1,207 @@
 ---
-const { categories = [], years = [] } = Astro.props as { categories: string[]; years: string[] };
+const { categories = [], years = [], months = [] } = Astro.props as {
+  categories: string[];
+  years: string[];
+  months: { value: string; label: string }[];
+};
 ---
-<form class="filters" id="news-filters" role="search">
-  <div class="field field--search"><label for="search">Buscar noticias</label><input id="search" type="search" placeholder="Título o palabra clave" /></div>
-  <div class="field"><label for="category">Categoría</label><select id="category"><option value="">Todas</option>{categories.map((category) => <option value={category}>{category}</option>)}</select></div>
-  <div class="field"><label for="year">Fecha</label><select id="year"><option value="">Todos los años</option>{years.map((year) => <option value={year}>{year}</option>)}</select></div>
-  <div class="field"><label for="sort">Ordenar</label><select id="sort"><option value="recent">Más recientes</option><option value="oldest">Más antiguas</option><option value="relevance">Relevancia</option></select></div>
+
+<form class="filters" id="news-filters" role="search" aria-describedby="results-count">
+  <div class="field field--search">
+    <label for="search">Buscar noticias</label>
+    <input id="search" name="buscar" type="search" placeholder="Título, resumen o palabra clave" autocomplete="off" />
+  </div>
+
+  <div class="field">
+    <label for="category">Categoría</label>
+    <select id="category" name="categoria">
+      <option value="">Todas</option>
+      {categories.map((category) => <option value={category}>{category}</option>)}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="year">Año</label>
+    <select id="year" name="anio">
+      <option value="">Todos</option>
+      {years.map((year) => <option value={year}>{year}</option>)}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="month">Mes</label>
+    <select id="month" name="mes">
+      <option value="">Todos</option>
+      {months.map((month) => <option value={month.value}>{month.label}</option>)}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="date">Fecha exacta</label>
+    <input id="date" name="fecha" type="date" />
+  </div>
+
+  <div class="field">
+    <label for="sort">Ordenar</label>
+    <select id="sort" name="orden">
+      <option value="recent">Más recientes</option>
+      <option value="oldest">Más antiguas</option>
+      <option value="relevance">Relevancia</option>
+    </select>
+  </div>
+
   <button type="reset">Limpiar filtros</button>
 </form>
+
 <p class="results-count" id="results-count" aria-live="polite"></p>
+
+<div class="news-empty-filter" id="news-empty-filter" hidden>
+  <h2>No se encontraron noticias</h2>
+  <p>Probá cambiar la fecha, la categoría o escribir otra palabra clave.</p>
+</div>
+
 <script>
   const form = document.querySelector<HTMLFormElement>('#news-filters');
   const grid = document.querySelector<HTMLElement>('#news-grid');
   const count = document.querySelector<HTMLElement>('#results-count');
+  const empty = document.querySelector<HTMLElement>('#news-empty-filter');
   const cards = [...document.querySelectorAll<HTMLElement>('[data-news-card]')];
+
+  const normalize = (value: string) =>
+    value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+  const params = new URLSearchParams(window.location.search);
+  const setInitialValue = (selector: string, keys: string[]) => {
+    const input = form?.querySelector<HTMLInputElement | HTMLSelectElement>(selector);
+    const value = keys.map((key) => params.get(key)).find(Boolean);
+    if (input && value) input.value = value;
+  };
+
+  setInitialValue('#search', ['buscar', 'q', 'search']);
+  setInitialValue('#category', ['categoria', 'category']);
+  setInitialValue('#year', ['anio', 'year']);
+  setInitialValue('#month', ['mes', 'month']);
+  setInitialValue('#date', ['fecha', 'date']);
+
   const update = () => {
     if (!form || !grid) return;
-    const search = (form.querySelector<HTMLInputElement>('#search')?.value ?? '').trim().toLowerCase();
+
+    const search = normalize((form.querySelector<HTMLInputElement>('#search')?.value ?? '').trim());
     const category = form.querySelector<HTMLSelectElement>('#category')?.value ?? '';
     const year = form.querySelector<HTMLSelectElement>('#year')?.value ?? '';
+    const month = form.querySelector<HTMLSelectElement>('#month')?.value ?? '';
+    const exactDate = form.querySelector<HTMLInputElement>('#date')?.value ?? '';
     const sort = form.querySelector<HTMLSelectElement>('#sort')?.value ?? 'recent';
-    let visible = cards.filter((card) => (!search || card.dataset.search?.includes(search)) && (!category || card.dataset.category === category) && (!year || card.dataset.date?.startsWith(year)));
-    visible.sort((a,b) => sort === 'oldest' ? (a.dataset.date ?? '').localeCompare(b.dataset.date ?? '') : sort === 'relevance' && search ? Number(!a.dataset.title?.startsWith(search)) - Number(!b.dataset.title?.startsWith(search)) : (b.dataset.date ?? '').localeCompare(a.dataset.date ?? ''));
-    cards.forEach((card) => card.hidden = true); visible.forEach((card) => { card.hidden = false; grid.append(card); });
+
+    const visible = cards.filter((card) => {
+      const cardSearch = normalize(card.dataset.search ?? '');
+      const cardDate = card.dataset.date ?? '';
+
+      return (!search || cardSearch.includes(search))
+        && (!category || card.dataset.category === category)
+        && (!year || card.dataset.year === year)
+        && (!month || card.dataset.month === month)
+        && (!exactDate || cardDate === exactDate);
+    });
+
+    visible.sort((a, b) => {
+      if (sort === 'oldest') return (a.dataset.date ?? '').localeCompare(b.dataset.date ?? '');
+      if (sort === 'relevance' && search) {
+        return Number(!normalize(a.dataset.title ?? '').startsWith(search))
+          - Number(!normalize(b.dataset.title ?? '').startsWith(search));
+      }
+      return (b.dataset.date ?? '').localeCompare(a.dataset.date ?? '');
+    });
+
+    cards.forEach((card) => {
+      card.hidden = true;
+    });
+
+    visible.forEach((card) => {
+      card.hidden = false;
+      grid.append(card);
+    });
+
+    grid.hidden = visible.length === 0;
+    if (empty) empty.hidden = visible.length > 0;
     if (count) count.textContent = `${visible.length} ${visible.length === 1 ? 'noticia encontrada' : 'noticias encontradas'}`;
   };
-  form?.addEventListener('input', update); form?.addEventListener('reset', () => setTimeout(update)); update();
+
+  form?.addEventListener('input', update);
+  form?.addEventListener('reset', () => setTimeout(update));
+  update();
 </script>
+
 <style>
-  .filters { display: grid; grid-template-columns: 2fr repeat(3, 1fr) auto; gap: .8rem; align-items: end; margin-bottom: 1rem; padding: 1.2rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); box-shadow: 0 12px 35px rgba(5,31,32,.06); }.filters button { min-height: 48px; padding: .7rem 1rem; border: 1px solid var(--line); border-radius: .75rem; background: var(--surface); color: var(--green-dark); cursor: pointer; font-weight: 700; }.results-count { margin-bottom: 2rem; color: var(--muted); font-size: .85rem; }
-  @media (max-width: 960px) { .filters { grid-template-columns: 1fr 1fr; }.field--search { grid-column: 1 / -1; } }
-  @media (max-width: 560px) { .filters { grid-template-columns: 1fr; }.field--search { grid-column: auto; } }
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .8rem;
+    align-items: end;
+    margin-bottom: 1rem;
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .field--search {
+    grid-column: auto;
+  }
+
+  .filters button {
+    justify-self: start;
+  }
+
+  .filters button {
+    min-height: 48px;
+    padding: .7rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: .75rem;
+    background: var(--surface);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .filters button:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-hover-secondary);
+  }
+
+  .results-count {
+    margin-bottom: 2rem;
+    color: var(--muted);
+    font-size: .85rem;
+  }
+
+  .news-empty-filter {
+    margin-top: 1rem;
+    padding: var(--space-block);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius);
+    background: var(--color-bg-surface-soft);
+    text-align: center;
+  }
+
+  .news-empty-filter h2 {
+    color: var(--color-primary);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+  }
+
+  .news-empty-filter p {
+    margin-top: .5rem;
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 560px) {
+    .filters {
+      grid-template-columns: 1fr;
+    }
+
+    .field--search {
+      grid-column: auto;
+    }
+  }
 </style>

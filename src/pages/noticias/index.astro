@@ -5,13 +5,75 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import NoticiaCard from '../../components/NoticiaCard.astro';
 import SearchAndFilterBar from '../../components/SearchAndFilterBar.astro';
 import InstitutionalSidebar from '../../components/InstitutionalSidebar.astro';
-const posts = (await getCollection('noticias', ({data}) => data.status === 'published')).sort((a,b)=>b.data.date.valueOf()-a.data.date.valueOf());
-const categories = [...new Set(posts.map((post)=>post.data.category))];
-const years = [...new Set(posts.map((post)=>String(post.data.date.getFullYear())))];
+
+const posts = (await getCollection('noticias', ({ data }) => data.status === 'published'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const categories = [...new Set(posts.map((post) => post.data.category))];
+const years = [...new Set(posts.map((post) => String(post.data.date.getFullYear())))];
+const monthFormatter = new Intl.DateTimeFormat('es-AR', { month: 'long' });
+const months = [...new Set(posts.map((post) => String(post.data.date.getMonth() + 1).padStart(2, '0')))]
+  .sort()
+  .map((value) => ({
+    value,
+    label: monthFormatter.format(new Date(2026, Number(value) - 1, 1)),
+  }));
 ---
+
 <MainLayout title="Noticias" description="Noticias, actividades y novedades institucionales del Instituto Superior de Sanidad Ramón Carrillo en Formosa.">
-  <Breadcrumbs items={[{label:'Noticias'}]} />
-  <section class="page-hero"><div class="container"><span class="eyebrow">Noticias</span><h1>Actualidad de nuestra comunidad</h1><p class="lead">Información institucional, actividades educativas y contenidos de interés sanitario y cultural.</p></div></section>
-  <section class="section"><div class="container editorial-shell"><div class="editorial-main"><SearchAndFilterBar categories={categories} years={years}/>{posts.length ? <div class="grid grid--2" id="news-grid">{posts.map((post)=><NoticiaCard post={post}/>)}</div> : <div class="empty-state"><h2>No hay noticias publicadas</h2><p>Las novedades aparecerán en este espacio.</p></div>}<div class="archive"><p>¿Buscás contenido anterior?</p><a class="text-link" href="/noticias/archivo/">Consultar archivo histórico →</a></div></div><InstitutionalSidebar title="Noticias" links={[{label:'Últimas noticias',href:'/noticias/'},{label:'Actividades',href:'/noticias/?categoria=Actividades'},{label:'Institucionales',href:'/noticias/?categoria=Institucional'},{label:'Archivo histórico',href:'/noticias/archivo/'}]} /></div></section>
+  <Breadcrumbs items={[{ label: 'Noticias' }]} />
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Noticias</span>
+      <h1>Actualidad de nuestra comunidad</h1>
+      <p class="lead">Información institucional, actividades educativas y contenidos de interés sanitario y cultural.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container editorial-shell">
+      <div class="editorial-main">
+        <SearchAndFilterBar categories={categories} years={years} months={months} />
+
+        {posts.length ? (
+          <div class="grid grid--2" id="news-grid">
+            {posts.map((post) => <NoticiaCard post={post} />)}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <h2>No hay noticias publicadas</h2>
+            <p>Las novedades aparecerán en este espacio.</p>
+          </div>
+        )}
+
+        <div class="archive">
+          <p>¿Buscás contenido anterior?</p>
+          <a class="text-link" href="/noticias/archivo/">Consultar archivo histórico →</a>
+        </div>
+      </div>
+
+      <InstitutionalSidebar
+        title="Noticias"
+        links={[
+          { label: 'Últimas noticias', href: '/noticias/' },
+          { label: 'Actividades', href: '/noticias/?categoria=Actividades' },
+          { label: 'Institucionales', href: '/noticias/?categoria=Institucional' },
+          { label: 'Archivo histórico', href: '/noticias/archivo/' },
+        ]}
+      />
+    </div>
+  </section>
 </MainLayout>
-<style>.archive{margin-top:3rem;padding-top:2rem;border-top:1px solid var(--line)}.archive .text-link{margin-top:.3rem}</style>
+
+<style>
+  .archive {
+    margin-top: var(--space-block);
+    padding-top: var(--space-stack-gap);
+    border-top: 1px solid var(--line);
+  }
+
+  .archive .text-link {
+    margin-top: .3rem;
+  }
+</style>

@@ -11,14 +11,14 @@
   </div>
 </section>
 <style>
-  .hero { position: relative; display: flex; min-height: calc(100svh - 112px); overflow: hidden; align-items: center; color: var(--white); isolation: isolate; }
+  .hero { position: relative; display: flex; min-height: clamp(34rem, 72svh, 44rem); overflow: hidden; align-items: center; color: var(--white); isolation: isolate; }
   .hero::before { position: absolute; z-index: -2; inset: -18px; background: url('/images/institution/portada-iss.png') center / cover no-repeat; content: ''; filter: blur(5px); transform: scale(1.035); }
-  .hero::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(5,31,32,.91) 0%, rgba(11,43,38,.8) 48%, rgba(16,47,48,.46) 100%); content: ''; }
-  .hero__content { padding-block: clamp(5rem, 10vw, 9rem) 2rem; }
-  .hero__tag { display: inline-flex; margin-bottom: 1.6rem; padding: .42rem .78rem; border: 1px solid rgba(185,218,219,.6); border-radius: 999px; background: rgba(5,31,32,.22); color: #c6e0e1; font-size: .74rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; backdrop-filter: blur(6px); }
-  h1 { max-width: 980px; color: var(--white); font-size: clamp(3rem, 7vw, 6.7rem); line-height: .98; text-shadow: 0 5px 30px rgba(0,0,0,.35); }
-  .hero__content > p { max-width: 690px; margin-top: 1.7rem; color: #e0e9e7; font-size: clamp(1.05rem,2vw,1.25rem); text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+  .hero::after { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, var(--color-overlay-hero) 0%, var(--color-overlay-primary) 48%, var(--color-overlay-soft) 100%); content: ''; }
+  .hero__content { padding-block: clamp(4rem, 8vw, 6rem) 1.5rem; }
+  .hero__tag { display: inline-flex; margin-bottom: 1.6rem; padding: .42rem .78rem; border: 1px solid var(--color-border-inverse-strong); border-radius: 999px; background: var(--color-hover-primary); color: var(--color-text-inverse-soft); font-size: .74rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; backdrop-filter: blur(6px); }
+  h1 { max-width: 980px; color: var(--white); font-size: clamp(3rem, 7vw, 6.7rem); line-height: .98; text-shadow: 0 5px 30px var(--color-overlay-soft); }
+  .hero__content > p { max-width: 690px; margin-top: 1.7rem; color: var(--color-text-inverse-soft); font-size: clamp(1.05rem,2vw,1.25rem); text-shadow: 0 2px 18px var(--color-overlay-soft); }
   .hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2.2rem; }
-  .hero__foot { display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(4rem,10vh,8rem); padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.28); color: #d7e4e1; font-size: .76rem; letter-spacing: .04em; }
-  @media (max-width: 720px) { .hero { min-height: calc(100svh - 104px); }.hero::after { background: rgba(5,31,32,.78); }.hero__foot { align-items: flex-start; flex-direction: column; } }
+  .hero__foot { display: flex; justify-content: space-between; gap: 1rem; margin-top: clamp(2.25rem,6vh,4rem); padding-top: 1rem; border-top: 1px solid var(--color-border-inverse-strong); color: var(--color-text-inverse-soft); font-size: .76rem; letter-spacing: .04em; }
+  @media (max-width: 720px) { .hero { min-height: clamp(30rem, 78svh, 38rem); }.hero::after { background: var(--color-overlay-primary); }.hero__foot { align-items: flex-start; flex-direction: column; } }
 </style>

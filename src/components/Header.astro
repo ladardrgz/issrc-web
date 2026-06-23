@@ -20,12 +20,12 @@ import { site } from '../data/site';
   </div>
 </header>
 <style>
-  .site-header { position: sticky; top: 0; z-index: 50; box-shadow: 0 1px 0 rgba(5,31,32,.08); }
-  .topbar { background: var(--green-dark); color: #dbe7df; font-size: .76rem; }
+  .site-header { position: sticky; top: 0; z-index: 50; box-shadow: 0 1px 0 var(--color-border-soft); }
+  .topbar { background: var(--color-bg-primary); color: var(--color-text-inverse-soft); font-size: .76rem; }
   .topbar__inner { display: flex; min-height: 34px; align-items: center; justify-content: space-between; gap: 1rem; }
   .topbar__inner div { display: flex; gap: .65rem; }
-  .topbar a:hover { color: var(--white); text-decoration: underline; }
-  .header-main { background: rgba(255,255,255,.97); backdrop-filter: blur(12px); }
+  .topbar a:hover { color: var(--color-link-inverse-hover); text-decoration: underline; }
+  .header-main { background: var(--color-backdrop-surface); backdrop-filter: blur(12px); }
   .header-main__inner { display: flex; min-height: 78px; align-items: center; justify-content: space-between; gap: 1.5rem; }
   .brand { display: flex; flex: 0 1 390px; align-items: center; gap: .75rem; }
   .brand__logo { width: 58px; height: 58px; flex: 0 0 auto; object-fit: contain; }

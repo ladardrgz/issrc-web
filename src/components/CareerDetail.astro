@@ -1,0 +1,268 @@
+---
+import type { Career } from '../data/careers';
+import CareerStudyPlan from './CareerStudyPlan.astro';
+
+const { career } = Astro.props as { career: Career };
+---
+
+<section class="career-detail-section">
+  <div class="container">
+    <article class="career-detail">
+      <div class="career-detail__top">
+        <div class="career-detail__media">
+          <img src={career.image} alt={career.imageAlt} loading="eager" width="900" height="680" />
+          <div class="career-detail__media-badges" aria-label="Datos principales">
+            <span>{career.duration}</span>
+            <span>{career.modality}</span>
+          </div>
+        </div>
+
+        <div class="career-detail__content">
+          <div class="career-detail__badges">
+            <span>{career.duration}</span>
+            <span>{career.period}</span>
+            <span>{career.modality}</span>
+          </div>
+
+          <p class="career-detail__eyebrow">Carrera · Formosa</p>
+          <h1>{career.title}</h1>
+          <p class="career-detail__description">{career.description}</p>
+
+          <div class="career-detail__profile">
+            <h2>Perfil profesional</h2>
+            <ul>
+              {career.profile.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="career-detail__actions">
+            <CareerStudyPlan plan={career.plan} careerSlug={career.slug} />
+            <a class="career-detail__outline" href={`/contacto/?carrera=${encodeURIComponent(career.title)}`}>
+              Consultar Requisitos de Inscripción
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .career-detail-section {
+    padding-block: var(--space-section-y);
+    background:
+      radial-gradient(
+        circle at top right,
+        color-mix(in srgb, var(--color-accent) 24%, transparent),
+        transparent 28rem
+      ),
+      var(--color-bg-body);
+  }
+
+  .career-detail {
+    overflow: hidden;
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-card-bg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .career-detail__top {
+    display: grid;
+    grid-template-columns: minmax(280px, .95fr) minmax(320px, 1.05fr);
+    min-height: auto;
+  }
+
+  .career-detail__media {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(280px, 36vw, 380px);
+    background: var(--color-bg-surface-soft);
+  }
+
+  .career-detail__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .career-detail__media::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-primary) 10%, transparent),
+      color-mix(in srgb, var(--color-primary) 42%, transparent)
+    );
+    content: '';
+  }
+
+  .career-detail__media-badges {
+    position: absolute;
+    z-index: 1;
+    top: 1rem;
+    left: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+
+  .career-detail__media-badges span,
+  .career-detail__badges span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.85rem;
+    padding: .28rem .75rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .career-detail__media-badges span {
+    background: color-mix(in srgb, var(--color-primary) 82%, transparent);
+    color: var(--color-accent);
+    backdrop-filter: blur(6px);
+  }
+
+  .career-detail__content {
+    display: grid;
+    align-content: start;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .career-detail__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+  }
+
+  .career-detail__badges span {
+    border: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
+    background: color-mix(in srgb, var(--color-secondary) 12%, transparent);
+    color: var(--color-primary);
+  }
+
+  .career-detail__eyebrow {
+    margin: .25rem 0 -.4rem;
+    color: var(--color-secondary);
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .career-detail h1 {
+    color: var(--color-primary);
+    font-size: clamp(2rem, 5vw, 3.8rem);
+  }
+
+  .career-detail__description {
+    color: var(--color-text-secondary);
+    font-size: 1.02rem;
+    line-height: 1.75;
+  }
+
+  .career-detail__profile {
+    display: grid;
+    gap: .85rem;
+    padding-top: .5rem;
+  }
+
+  .career-detail__profile h2 {
+    color: var(--color-primary);
+    font-size: 1rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  .career-detail__profile ul {
+    display: grid;
+    gap: .65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .career-detail__profile li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: .65rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  .career-detail__profile li::before {
+    display: inline-grid;
+    width: 1.1rem;
+    height: 1.1rem;
+    place-items: center;
+    margin-top: .2rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-secondary) 16%, transparent);
+    color: var(--color-secondary);
+    font-size: .72rem;
+    font-weight: 900;
+    content: '✓';
+  }
+
+  .career-detail__actions {
+    display: grid;
+    gap: 1rem;
+    margin-top: .5rem;
+  }
+
+  .career-detail__outline {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: .65rem 1rem;
+    border: 1.5px solid var(--color-primary);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-primary);
+    font-weight: 900;
+    transition:
+      background-color var(--transition-base),
+      color var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .career-detail__outline:hover {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 900px) {
+    .career-detail__top {
+      grid-template-columns: 1fr;
+    }
+
+    .career-detail__media {
+      min-height: 300px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .career-detail-section {
+      padding: 2rem 0;
+    }
+
+    .career-detail {
+      border-radius: var(--radius-lg);
+    }
+
+    .career-detail__content {
+      padding: 1.25rem;
+    }
+
+    .career-detail__outline {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

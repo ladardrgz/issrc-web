@@ -1,30 +1,212 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '../layouts/MainLayout.astro';
-import Hero from '../components/Hero.astro';
-import CareerCard from '../components/CareerCard.astro';
-import NoticiaCard from '../components/NoticiaCard.astro';
-import CampusAccessCard from '../components/CampusAccessCard.astro';
-import SectionHeader from '../components/SectionHeader.astro';
-import InstitutionalSidebar from '../components/InstitutionalSidebar.astro';
-import { careers } from '../data/careers';
-const posts = (await getCollection('noticias', ({ data }) => data.status === 'published')).sort((a,b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0,3);
+import { getCollection } from "astro:content";
+import MainLayout from "../layouts/MainLayout.astro";
+import Hero from "../components/Hero.astro";
+import CareerCard from "../components/CareerCard.astro";
+import NoticiaCard from "../components/NoticiaCard.astro";
+import CampusAccessCard from "../components/CampusAccessCard.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import InstitutionalSidebar from "../components/InstitutionalSidebar.astro";
+import { careers } from "../data/careers";
+const posts = (
+  await getCollection("noticias", ({ data }) => data.status === "published")
+)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 const quickLinks = [
-  { icon: '01', title: 'Carreras', text: 'Explorá la oferta académica y encontrá información de cada propuesta.', href: '/carreras/' },
-  { icon: '02', title: 'Ingresantes', text: 'Consultá requisitos, documentación y preguntas frecuentes.', href: '/ingresantes/' },
-  { icon: '03', title: 'Campus Virtual', text: 'Ingresá al entorno académico externo con tus credenciales.', href: '#campus' },
-  { icon: '04', title: 'Contacto', text: 'Comunicate con el Instituto para recibir información.', href: '/contacto/' },
+  {
+    icon: "01",
+    title: "Carreras",
+    text: "Explorá la oferta académica y encontrá información de cada propuesta.",
+    href: "/carreras/",
+  },
+  {
+    icon: "02",
+    title: "Ingresantes",
+    text: "Consultá requisitos, documentación y preguntas frecuentes.",
+    href: "/ingresantes/",
+  },
+  {
+    icon: "03",
+    title: "Campus Virtual",
+    text: "Ingresá al entorno académico externo con tus credenciales.",
+    href: "#campus",
+  },
+  {
+    icon: "04",
+    title: "Contacto",
+    text: "Comunicate con el Instituto para recibir información.",
+    href: "/contacto/",
+  },
 ];
 ---
+
 <MainLayout title="Inicio">
   <Hero />
-  <section class="quick section"><div class="container editorial-shell"><div class="editorial-main grid grid--2">{quickLinks.map((item) => <a class="card" href={item.href}><span class="card__icon">{item.icon}</span><h2>{item.title}</h2><p>{item.text}</p><span class="text-link">Acceder →</span></a>)}</div><InstitutionalSidebar title="Accesos del Instituto" /></div></section>
-  <section class="section section--soft"><div class="container"><SectionHeader eyebrow="Nuestra institución" title="Educación sanitaria con compromiso y cercanía" description="Una propuesta orientada a la formación profesional, la responsabilidad social y las necesidades de la comunidad de Formosa."/><div class="grid grid--3"><article class="card"><span class="card__icon">✦</span><h3>Formación sanitaria</h3><p>Una identidad académica enfocada en la preparación de profesionales del ámbito de la salud.</p></article><article class="card"><span class="card__icon">◎</span><h3>Comunidad educativa</h3><p>Un espacio institucional basado en el respeto, la participación y el acompañamiento.</p></article><article class="card"><span class="card__icon">◇</span><h3>Trayectoria institucional</h3><p>[Información oficial sobre la trayectoria y los antecedentes de la institución]</p></article></div></div></section>
-  <section class="section"><div class="container"><SectionHeader eyebrow="Oferta académica" title="Elegí una formación con propósito" description="Conocé las propuestas disponibles, su modalidad, duración y perfil profesional."/><div class="grid grid--3">{careers.slice(0,3).map((career) => <CareerCard career={career}/>)}</div><a class="text-link" href="/carreras/">Ver toda la oferta académica →</a></div></section>
-  <section class="section section--soft"><div class="container split"><div class="placeholder-media"><div><strong>[Imagen institucional]</strong><p>Espacio reservado para una fotografía real del Instituto.</p></div></div><div class="prose"><span class="eyebrow">Sobre el Instituto</span><h2>Una institución vinculada con la educación y la salud</h2><p class="lead">El Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación HAC desarrolla su labor educativa en la ciudad de Formosa.</p><p>La información oficial sobre historia, misión, visión, valores y autoridades se organizará en una página institucional clara y accesible.</p><a class="text-link" href="/institucion/">Conocer la institución →</a></div></div></section>
-  <section class="section" id="campus"><div class="container"><CampusAccessCard /></div></section>
-  <section class="section section--soft"><div class="container"><SectionHeader eyebrow="Noticias" title="Actualidad institucional" description="Novedades, actividades y contenidos de interés para nuestra comunidad."/>{posts.length ? <div class="grid grid--3">{posts.map((post) => <NoticiaCard post={post}/>)}</div> : <div class="empty-state"><h3>No hay noticias publicadas</h3><p>Las novedades aparecerán en este espacio.</p></div>}<a class="text-link" href="/noticias/">Ver todas las noticias →</a></div></section>
-  <section class="section"><div class="container split"><div><span class="eyebrow">Vida institucional</span><h2>Actividades, convenios y comunidad</h2><p class="lead">Este espacio reunirá información verificada sobre jornadas, acuerdos y acciones institucionales.</p><a class="text-link" href="/institucion/#convenios">Conocer más →</a></div><div class="grid grid--2"><article class="card"><h3>Convenios</h3><p>[Información sobre convenios institucionales]</p></article><article class="card"><h3>Actividades</h3><p>[Información sobre próximas actividades]</p></article></div></div></section>
-  <section class="section section--dark"><div class="container contact-cta"><div><span class="eyebrow">Contacto</span><h2>Estamos para orientarte</h2><p class="lead">Córdoba 447 · Formosa Capital<br/>contacto@issformosa.edu.ar · (3704) 421840 / 431868</p></div><a class="button button--light" href="/contacto/">Ver canales de contacto →</a></div></section>
+  <section class="quick section">
+    <div class="container editorial-shell">
+      <div class="editorial-main grid grid--2">
+        {
+          quickLinks.map((item) => (
+            <a class="card" href={item.href}>
+              <>
+                <span class="card__icon">{item.icon}</span>
+                <h2>{item.title}</h2>
+                <p>{item.text}</p>
+                <span class="text-link">Acceder →</span>
+              </>
+            </a>
+          ))
+        }
+      </div><InstitutionalSidebar title="Accesos del Instituto" />
+    </div>
+  </section>
+  <section class="section section--soft">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Nuestra institución"
+        title="Educación sanitaria con compromiso y cercanía"
+        description="Una propuesta orientada a la formación profesional, la responsabilidad social y las necesidades de la comunidad de Formosa."
+      /><div class="grid grid--3">
+        <article class="card">
+          <span class="card__icon">✦</span><h3>Formación sanitaria</h3><p>
+            Una identidad académica enfocada en la preparación de profesionales
+            del ámbito de la salud.
+          </p>
+        </article><article class="card">
+          <span class="card__icon">◎</span><h3>Comunidad educativa</h3><p>
+            Un espacio institucional basado en el respeto, la participación y el
+            acompañamiento.
+          </p>
+        </article><article class="card">
+          <span class="card__icon">◇</span><h3>Trayectoria institucional</h3><p>
+            [Información oficial sobre la trayectoria y los antecedentes de la
+            institución]
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Oferta académica"
+        title="Elegí una formación con propósito"
+        description="Conocé las propuestas disponibles, su modalidad, duración y perfil profesional."
+      /><div class="grid grid--3">
+        {careers.slice(0, 3).map((career) => <CareerCard career={career} />)}
+      </div><a class="text-link" href="/carreras/"
+        >Ver toda la oferta académica →</a
+      >
+    </div>
+  </section>
+  <section class="section section--soft">
+    <div class="container split">
+      <div class="placeholder-media">
+        <div>
+          <img
+            src="/images/branding/portada-iss.png"
+            alt="Imagen institucional del Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo"
+            loading="lazy"
+          />
+        </div>
+      </div><div class="prose">
+        <span class="eyebrow">Sobre el Instituto</span><h2>
+          Una institución vinculada con la educación y la salud
+        </h2><p class="lead">
+          El Instituto Superior de Sanidad Prof. Dr. Ramón Carrillo - Fundación
+          HAC desarrolla su labor educativa en la ciudad de Formosa.
+        </p><p>
+          La información oficial sobre historia, misión, visión, valores y
+          autoridades se organizará en una página institucional clara y
+          accesible.
+        </p><a class="text-link" href="/institucion/"
+          >Conocer la institución →</a
+        >
+      </div>
+    </div>
+  </section>
+  <section class="section" id="campus">
+    <div class="container"><CampusAccessCard /></div>
+  </section>
+  <section class="section section--soft">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Noticias"
+        title="Actualidad institucional"
+        description="Novedades, actividades y contenidos de interés para nuestra comunidad."
+      />{
+        posts.length ? (
+          <div class="grid grid--3">
+            {posts.map((post) => (
+              <NoticiaCard post={post} />
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <>
+              <h3>No hay noticias publicadas</h3>
+              <p>Las novedades aparecerán en este espacio.</p>
+            </>
+          </div>
+        )
+      }<a class="text-link" href="/noticias/">Ver todas las noticias →</a>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Vida institucional</span><h2>
+          Actividades, convenios y comunidad
+        </h2><p class="lead">
+          Este espacio reunirá información verificada sobre jornadas, acuerdos y
+          acciones institucionales.
+        </p><a class="text-link" href="/institucion/#convenios">Conocer más →</a
+        >
+      </div><div class="grid grid--2">
+        <article class="card">
+          <h3>Convenios</h3><p>[Información sobre convenios institucionales]</p>
+        </article><article class="card">
+          <h3>Actividades</h3><p>[Información sobre próximas actividades]</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="section section--dark home-contact-section">
+    <div class="container contact-cta">
+      <div>
+        <span class="eyebrow">Contacto</span><h2>Estamos para orientarte</h2><p
+          class="lead"
+        >
+          Córdoba 447 · Formosa Capital<br />contacto@issformosa.edu.ar · (3704)
+          421840 / 431868
+        </p>
+      </div><a class="button button--light" href="/contacto/"
+        >Ver canales de contacto →</a
+      >
+    </div>
+  </section>
 </MainLayout>
-<style>.quick{padding-block:2rem}.quick h2{font-size:1.3rem}.contact-cta{display:flex;align-items:center;justify-content:space-between;gap:2rem}@media(max-width:650px){.contact-cta{align-items:flex-start;flex-direction:column}}</style>
+<style>
+  .quick {
+    padding-block: 2rem;
+  }
+  .quick h2 {
+    font-size: 1.3rem;
+  }
+  .contact-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .home-contact-section {
+    padding-block: clamp(2rem, 4vw, 3rem);
+  }
+  @media (max-width: 650px) {
+    .contact-cta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
