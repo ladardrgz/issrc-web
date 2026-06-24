@@ -4,7 +4,7 @@ slug: bienvenida
 date: 2026-06-22
 category: Institucional
 summary: Presentamos el nuevo espacio digital de nuestra comunidad educativa.
-featuredImage: /uploads/images/istockphoto-2233739095-612x612.jpg
+featuredImage: https://res.cloudinary.com/dw9odd2n1/image/upload/v1782256770/Billetes_de_10_pdxve3.png
 pdf: /uploads/documents/curso-de-html-css-desde-cero.pdf
 status: published
 ---
