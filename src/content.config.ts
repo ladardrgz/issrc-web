@@ -18,6 +18,27 @@ const optionalAsset = (folder: 'images' | 'documents', extensions: string[]) =>
       .optional(),
   );
 
+const optionalPdf = () =>
+  z.preprocess(
+    (value) => (value === '' ? undefined : value),
+    z
+      .string()
+      .regex(
+        new RegExp(
+          [
+            '^(',
+            '/uploads/documents/[^?#]+\\.pdf',
+            `|https://res\\.cloudinary\\.com/${CLOUDINARY_CLOUD_NAME}/(?:image|raw)/upload/[^?#]+\\.pdf`,
+            '|https://drive\\.google\\.com/(?:file/d/[A-Za-z0-9_-]+(?:/(?:view|preview))?|open\\?id=[A-Za-z0-9_-]+|uc\\?(?:export=download&)?id=[A-Za-z0-9_-]+)(?:[?&][^\\s]*)?',
+            ')$',
+          ].join(''),
+          'i',
+        ),
+        'El PDF debe ser un enlace público de Google Drive o, por compatibilidad histórica, un PDF ya publicado en Cloudinary o /uploads/documents/.',
+      )
+      .optional(),
+  );
+
 const noticias = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/noticias' }),
   schema: z.object({
@@ -35,7 +56,7 @@ const noticias = defineCollection({
       z.string().trim().max(280).optional(),
     ),
     featuredImage: optionalAsset('images', ['avif', 'gif', 'jpeg', 'jpg', 'png', 'webp']),
-    pdf: optionalAsset('documents', ['pdf']),
+    pdf: optionalPdf(),
     status: z.enum(['draft', 'published']).default('draft'),
   }),
 });

@@ -42,7 +42,11 @@ const schema = {
     )}
     <div class="section container article-width content">
       <Content />
-      {pdf && <a class="button document-link" href={pdf} type="application/pdf">Consultar documento PDF</a>}
+      {pdf && (
+        <a class="button document-link" href={pdf} target="_blank" rel="noopener noreferrer">
+          Consultar documento PDF
+        </a>
+      )}
     </div>
   </article>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />

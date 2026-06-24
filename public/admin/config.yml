@@ -19,11 +19,9 @@ display_url: https://issrc-web.ladardrgz.workers.dev
 logo_url: /images/branding/logo-redisenado.png
 
 # Seguridad operativa:
-# - Ya no se usa el Media Library embebido de Cloudinary porque depende de
-#   iframes/cookies de terceros y puede fallar en navegadores modernos.
-# - Las personas editoras suben imágenes/PDFs desde el panel oficial de
-#   Cloudinary y pegan acá la URL segura de res.cloudinary.com.
-# - API secret de Cloudinary nunca debe escribirse en este repositorio.
+# - Imágenes: se gestionan desde Cloudinary y se pega la URL pública de entrega.
+# - Documentos PDF: se comparten desde Google Drive y se pega el enlace público.
+# - No guardar API secrets, tokens ni credenciales en este repositorio.
 media_folder: public/uploads/images
 public_folder: /uploads/images
 
@@ -95,14 +93,14 @@ collections:
         pattern:
           - '^$|^https:\/\/res\.cloudinary\.com\/dw9odd2n1\/image\/upload\/[^?#]+\.(?:avif|gif|jpe?g|png|webp)(?:[?#].*)?$'
           - "La imagen debe ser una URL segura de Cloudinary del cloud dw9odd2n1 y terminar en AVIF, GIF, JPG, JPEG, PNG o WebP. No pegues enlaces de la consola ni de otros sitios."
-      - label: URL de documento PDF en Cloudinary
+      - label: Enlace público del PDF en Google Drive
         name: pdf
         widget: string
         required: false
-        hint: "Opcional. Pegá la URL pública/directa del archivo PDF, no el enlace de colección. Debe empezar con https://res.cloudinary.com/dw9odd2n1/raw/upload/ o https://res.cloudinary.com/dw9odd2n1/image/upload/ y terminar en .pdf. Si la URL empieza con https://collection.cloudinary.com/, abriste una colección: entrá al archivo PDF y copiá su Delivery URL."
+        hint: "Opcional. Subí el PDF a Google Drive, compartilo como 'Cualquier persona con el enlace puede ver' y pegá el enlace acá. Formato recomendado: https://drive.google.com/file/d/ID_DEL_ARCHIVO/view?usp=sharing. No pegues enlaces de carpetas ni archivos privados."
         pattern:
-          - '^$|^https:\/\/res\.cloudinary\.com\/dw9odd2n1\/(?:raw|image)\/upload\/[^?#]+\.pdf(?:[?#].*)?$'
-          - "Pegá la URL pública directa del PDF desde res.cloudinary.com/dw9odd2n1. No uses enlaces de collection.cloudinary.com, vista previa, carpetas, rutas locales ni enlaces privados."
+          - '^$|^https:\/\/drive\.google\.com\/(?:file\/d\/[A-Za-z0-9_-]+(?:\/(?:view|preview))?|open\?id=[A-Za-z0-9_-]+|uc\?(?:export=download&)?id=[A-Za-z0-9_-]+)(?:[?&][^\s]*)?$'
+          - "El PDF debe ser un enlace público de Google Drive. Usá Compartir → Cualquier persona con el enlace puede ver → Copiar enlace. No pegues enlaces de carpetas, documentos privados ni URLs de Cloudinary para PDFs."
       - label: Estado
         name: status
         widget: select
