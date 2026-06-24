@@ -99,10 +99,10 @@ collections:
         name: pdf
         widget: string
         required: false
-        hint: "Opcional. Subí el PDF en Cloudinary y pegá la URL segura. Debe empezar con https://res.cloudinary.com/dw9odd2n1/raw/upload/ o /image/upload/ y terminar en .pdf."
+        hint: "Opcional. Pegá la URL pública/directa del archivo PDF, no el enlace de colección. Debe empezar con https://res.cloudinary.com/dw9odd2n1/raw/upload/ o https://res.cloudinary.com/dw9odd2n1/image/upload/ y terminar en .pdf. Si la URL empieza con https://collection.cloudinary.com/, abriste una colección: entrá al archivo PDF y copiá su Delivery URL."
         pattern:
           - '^$|^https:\/\/res\.cloudinary\.com\/dw9odd2n1\/(?:raw|image)\/upload\/[^?#]+\.pdf(?:[?#].*)?$'
-          - "El documento debe ser un PDF público de Cloudinary del cloud dw9odd2n1. No pegues enlaces privados, de vista previa, ni rutas locales."
+          - "Pegá la URL pública directa del PDF desde res.cloudinary.com/dw9odd2n1. No uses enlaces de collection.cloudinary.com, vista previa, carpetas, rutas locales ni enlaces privados."
       - label: Estado
         name: status
         widget: select

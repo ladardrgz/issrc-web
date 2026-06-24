@@ -26,6 +26,14 @@ featuredImage: https://res.cloudinary.com/dw9odd2n1/image/upload/v0000000000/not
 pdf: https://res.cloudinary.com/dw9odd2n1/raw/upload/v0000000000/documentos/reglamento.pdf
 ```
 
+No pegar enlaces de colección o vista previa. Por ejemplo, esta URL no sirve para el sitio:
+
+```txt
+https://collection.cloudinary.com/dw9odd2n1/...
+```
+
+Ese enlace abre una colección dentro de Cloudinary, pero no es el archivo PDF público. Para Decap hay que entrar al archivo específico y copiar su URL pública/directa, normalmente llamada `Delivery URL`, `Secure URL` o URL de entrega.
+
 ## Por qué no usamos el selector embebido de Cloudinary
 
 El selector embebido depende de iframes, cookies de terceros y sesión activa de Cloudinary dentro del panel Decap. En navegadores modernos puede fallar con mensajes como:
