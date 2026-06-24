@@ -11,7 +11,7 @@ export const getStaticPaths = (async () => {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, date, category, summary, featuredImage, pdf } = post.data;
+const { title, date, category, summary, featuredImage, featuredImageAlt, pdf, pdfLabel } = post.data;
 const formattedDate = date.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
 const schema = {
   '@context': 'https://schema.org',
@@ -37,14 +37,14 @@ const schema = {
     </header>
     {featuredImage && (
       <div class="container article-width article-image">
-        <img src={featuredImage} alt={`Imagen destacada de ${title}`} width="1200" height="675" />
+        <img src={featuredImage} alt={featuredImageAlt ?? `Imagen destacada de ${title}`} width="1200" height="675" />
       </div>
     )}
     <div class="section container article-width content">
       <Content />
       {pdf && (
         <a class="button document-link" href={pdf} target="_blank" rel="noopener noreferrer">
-          Consultar documento PDF
+          {pdfLabel ?? 'Consultar documento PDF'}
         </a>
       )}
     </div>

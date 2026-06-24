@@ -1,4 +1,18 @@
-# Decap guarda cada entrada como Markdown en GitHub; no existe una base de datos.
+# ============================================================
+# Decap CMS - Configuración del panel editorial
+# Proyecto: ISSRC Web
+# ============================================================
+#
+# Decap CMS guarda cada publicación como archivo Markdown en GitHub.
+# No utiliza base de datos, no almacena credenciales institucionales
+# y no administra usuarios propios dentro del sitio web.
+#
+# Seguridad operativa:
+# - No guardar API keys, tokens, contraseñas ni credenciales en este archivo.
+# - Las imágenes se gestionan mediante Cloudinary.
+# - Los documentos PDF se enlazan desde Google Drive mediante URLs públicas.
+# - El contenido publicado pasa por flujo editorial antes de llegar al sitio.
+
 backend:
   name: github
   repo: ladardrgz/issrc-web
@@ -11,17 +25,13 @@ backend:
 local_backend: true
 publish_mode: editorial_workflow
 
-# Traduce la interfaz general de Decap CMS. Los nombres, ayudas y opciones de
-# cada campo se definen en español más abajo para orientar a los editores.
 locale: es
 site_url: https://issrc-web.ladardrgz.workers.dev
 display_url: https://issrc-web.ladardrgz.workers.dev
 logo_url: /images/branding/logo-redisenado.png
 
-# Seguridad operativa:
-# - Imágenes: se gestionan desde Cloudinary y se pega la URL pública de entrega.
-# - Documentos PDF: se comparten desde Google Drive y se pega el enlace público.
-# - No guardar API secrets, tokens ni credenciales en este repositorio.
+# Carpeta local de respaldo para imágenes cargadas desde el CMS.
+# En este proyecto se recomienda usar Cloudinary para imágenes públicas.
 media_folder: public/uploads/images
 public_folder: /uploads/images
 
@@ -34,7 +44,9 @@ collections:
   - name: noticias
     label: Noticias y comunicados
     label_singular: Noticia o comunicado
-    description: Publicaciones institucionales revisadas antes de llegar al sitio público.
+    description: >
+      Sección para publicar novedades institucionales, comunicados académicos,
+      actividades, avisos y contenidos informativos revisados antes de su publicación.
     folder: src/content/noticias
     create: true
     delete: false
@@ -43,7 +55,13 @@ collections:
     identifier_field: slug
     slug: "{{slug}}"
     summary: "{{date}} · {{category}} · {{title}}"
-    sortable_fields: [date, title, category, status]
+
+    sortable_fields:
+      - date
+      - title
+      - category
+      - status
+
     view_filters:
       - label: Borradores
         field: status
@@ -51,70 +69,128 @@ collections:
       - label: Publicadas
         field: status
         pattern: published
+      - label: Institucional
+        field: category
+        pattern: Institucional
+      - label: Comunicados
+        field: category
+        pattern: Comunicado
+
     fields:
-      - label: Título
+      - label: Título de la publicación
         name: title
         widget: string
         required: true
         minlength: 5
         maxlength: 120
-      - label: Slug
+        hint: "Usá un título claro, institucional y específico. Evitá escribir todo en mayúsculas."
+
+      - label: Slug de la URL
         name: slug
         widget: string
         required: true
         minlength: 3
         maxlength: 100
-        hint: "URL sin espacios ni acentos. Ejemplo: inscripciones-2026. No cambiar después de publicar."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Usá minúsculas, números y guiones simples. No uses espacios, tildes ni símbolos."]
-      - label: Fecha
+        hint: "Será parte de la URL pública. Ejemplo válido: inscripciones-2026. No modificar después de publicar."
+        pattern:
+          - '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+          - "Usá solo minúsculas, números y guiones simples. No uses espacios, tildes, barras ni símbolos."
+
+      - label: Fecha de publicación
         name: date
         widget: datetime
         required: true
         date_format: YYYY-MM-DD
         time_format: false
         format: YYYY-MM-DD
+        hint: "Seleccioná la fecha oficial que se mostrará en la publicación."
+
       - label: Categoría
         name: category
         widget: select
         required: true
-        options: [Institucional, Comunicado, Académica, Actividades]
+        options:
+          - Institucional
+          - Comunicado
+          - Académica
+          - Actividades
         default: Institucional
-      - label: Resumen
+        hint: "Seleccioná la categoría que mejor represente el contenido."
+
+      - label: Resumen breve
         name: summary
         widget: text
         required: false
         maxlength: 280
-        hint: "Opcional. Máximo 280 caracteres. Si queda vacío, la tarjeta no muestra un texto de relleno."
+        hint: "Opcional. Máximo 280 caracteres. Se usa en tarjetas, listados y vistas previas."
+
       - label: URL de imagen destacada en Cloudinary
         name: featuredImage
         widget: string
         required: false
-        hint: "Opcional. Subí la imagen en Cloudinary, copiá la URL segura y pegala acá. Debe empezar con https://res.cloudinary.com/dw9odd2n1/image/upload/ y terminar en .avif, .gif, .jpg, .jpeg, .png o .webp."
+        hint: >
+          Opcional. Pegá únicamente la URL pública segura de Cloudinary.
+          Debe empezar con https://res.cloudinary.com/dw9odd2n1/image/upload/
+          y terminar en .avif, .gif, .jpg, .jpeg, .png o .webp.
         pattern:
           - '^$|^https:\/\/res\.cloudinary\.com\/dw9odd2n1\/image\/upload\/[^?#]+\.(?:avif|gif|jpe?g|png|webp)(?:[?#].*)?$'
-          - "La imagen debe ser una URL segura de Cloudinary del cloud dw9odd2n1 y terminar en AVIF, GIF, JPG, JPEG, PNG o WebP. No pegues enlaces de la consola ni de otros sitios."
-      - label: Enlace público del PDF en Google Drive
+          - "La imagen debe ser una URL pública válida de Cloudinary. No pegues enlaces de consola, carpetas, Google Drive ni otros sitios."
+
+      - label: Texto alternativo de la imagen
+        name: featuredImageAlt
+        widget: string
+        required: false
+        maxlength: 160
+        hint: "Opcional, pero recomendado para accesibilidad y SEO. Describí brevemente qué muestra la imagen."
+
+      - label: Enlace público del documento PDF
         name: pdf
         widget: string
         required: false
-        hint: "Opcional. Subí el PDF a Google Drive, compartilo como 'Cualquier persona con el enlace puede ver' y pegá el enlace acá. Formato recomendado: https://drive.google.com/file/d/ID_DEL_ARCHIVO/view?usp=sharing. No pegues enlaces de carpetas ni archivos privados."
+        hint: >
+          Opcional. Subí el PDF a Google Drive, configurá el permiso como
+          'Cualquier persona con el enlace puede ver' y pegá el enlace público.
+          No pegues enlaces privados, carpetas, documentos editables ni URLs de Cloudinary para PDFs.
         pattern:
           - '^$|^https:\/\/drive\.google\.com\/(?:file\/d\/[A-Za-z0-9_-]+(?:\/(?:view|preview))?|open\?id=[A-Za-z0-9_-]+|uc\?(?:export=download&)?id=[A-Za-z0-9_-]+)(?:[?&][^\s]*)?$'
-          - "El PDF debe ser un enlace público de Google Drive. Usá Compartir → Cualquier persona con el enlace puede ver → Copiar enlace. No pegues enlaces de carpetas, documentos privados ni URLs de Cloudinary para PDFs."
-      - label: Estado
+          - "El documento debe ser un enlace público válido de Google Drive. Usá Compartir → Cualquier persona con el enlace puede ver → Copiar enlace."
+
+      - label: Texto del botón del documento
+        name: pdfLabel
+        widget: string
+        required: false
+        maxlength: 80
+        hint: "Opcional. Ejemplo: Descargar reglamento, Ver circular, Consultar documento."
+
+      - label: Estado editorial
         name: status
         widget: select
         required: true
         options:
-          - { label: Borrador, value: draft }
-          - { label: Publicado, value: published }
+          - label: Borrador
+            value: draft
+          - label: Publicado
+            value: published
         default: draft
-        hint: "Debe estar en Publicado y completar el flujo editorial para aparecer en el sitio."
+        hint: "Solo las publicaciones marcadas como Publicado y aprobadas en el flujo editorial deberán mostrarse en el sitio."
+
       - label: Contenido principal
         name: body
         widget: markdown
         required: true
         minimal: true
-        buttons: [bold, italic, code, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+        buttons:
+          - bold
+          - italic
+          - code
+          - link
+          - heading-two
+          - heading-three
+          - quote
+          - bulleted-list
+          - numbered-list
         editor_components: []
-        hint: "Usá Markdown. Por seguridad, evitá pegar HTML crudo, scripts, iframes, formularios o imágenes dentro del cuerpo. Para imágenes, usá el campo URL de imagen destacada."
+        hint: >
+          Redactá el contenido en Markdown. Por seguridad, no pegues HTML crudo,
+          scripts, iframes, formularios, embeds externos ni imágenes dentro del cuerpo.
+          Para imágenes, usá el campo de imagen destacada.

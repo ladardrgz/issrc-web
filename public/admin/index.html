@@ -5,22 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title>Panel administrador de contenidos | ISS</title>
+
     <link rel="icon" type="image/x-icon" href="/images/admin/noticias.ico" />
     <link rel="shortcut icon" href="/images/admin/noticias.ico" />
     <link rel="stylesheet" href="/admin/admin.css" />
   </head>
+
   <body>
-    <noscript>Necesitás habilitar JavaScript para usar el administrador de contenidos.</noscript>
-    <div id="admin-loading" class="admin-loading" aria-live="polite">
-      <div>
-        <span class="admin-loading__eyebrow">ISS · Gestión editorial</span>
-        <h1>Panel administrador de contenidos</h1>
-        <p>
-          Iniciá sesión con GitHub para crear noticias y comunicados. Las imágenes y PDFs se cargan
-          en Cloudinary desde su panel oficial y acá se pega la URL segura.
-        </p>
-      </div>
+    <noscript>
+      Necesitás habilitar JavaScript para usar el administrador de contenidos.
+    </noscript>
+
+    <div id="admin-loading" class="admin-auth" aria-live="polite">
+      <section class="admin-auth__card">
+        <aside class="admin-auth__brand" aria-label="Información del panel">
+          <div class="admin-auth__logo">ISS</div>
+
+          <span class="admin-auth__eyebrow">Gestión editorial institucional</span>
+
+          <h1>Panel administrador de contenidos</h1>
+
+          <p>
+            Acceso privado para crear, editar y publicar noticias, comunicados
+            y documentación institucional del sitio web.
+          </p>
+
+          <div class="admin-auth__meta">
+            <span>Repositorio GitHub</span>
+            <span>Contenido estático</span>
+            <span>Decap CMS</span>
+          </div>
+        </aside>
+
+        <main class="admin-auth__login" aria-label="Inicio de sesión">
+          <div class="admin-auth__login-header">
+            <span class="admin-auth__system">ISS · Admin</span>
+            <h2>Iniciar sesión</h2>
+            <p>
+              Usá tu cuenta autorizada de GitHub para acceder al administrador.
+            </p>
+          </div>
+
+          <div class="admin-auth__preview" aria-hidden="true">
+            <label>
+              Usuario autorizado
+              <span>GitHub OAuth</span>
+            </label>
+
+            <label>
+              Permisos editoriales
+              <span>Noticias y comunicados</span>
+            </label>
+
+            <button type="button" tabindex="-1">
+              Cargando panel seguro…
+            </button>
+          </div>
+
+          <p class="admin-auth__note">
+            Las imágenes se gestionan desde Cloudinary y los PDFs desde enlaces
+            públicos aprobados de Google Drive.
+          </p>
+        </main>
+      </section>
     </div>
+
     <!-- Versión fijada: actualizarla de forma consciente y probar el flujo editorial. -->
     <script src="https://unpkg.com/decap-cms@3.8.4/dist/decap-cms.js"></script>
     <script src="/admin/admin-ui.js"></script>

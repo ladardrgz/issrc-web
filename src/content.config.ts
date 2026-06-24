@@ -56,7 +56,15 @@ const noticias = defineCollection({
       z.string().trim().max(280).optional(),
     ),
     featuredImage: optionalAsset('images', ['avif', 'gif', 'jpeg', 'jpg', 'png', 'webp']),
+    featuredImageAlt: z.preprocess(
+      (value) => (value === '' ? undefined : value),
+      z.string().trim().max(160).optional(),
+    ),
     pdf: optionalPdf(),
+    pdfLabel: z.preprocess(
+      (value) => (value === '' ? undefined : value),
+      z.string().trim().max(80).optional(),
+    ),
     status: z.enum(['draft', 'published']).default('draft'),
   }),
 });
