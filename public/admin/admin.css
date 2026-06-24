@@ -1,0 +1,94 @@
+:root {
+  color-scheme: light;
+  --admin-navy: #123c5a;
+  --admin-navy-strong: #0b2d45;
+  --admin-sky: #78cbe8;
+  --admin-line: #d7e5ef;
+  --admin-surface: #f4f8fb;
+  --admin-text: #13324a;
+  --admin-muted: #5b7082;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(120, 203, 232, .25), transparent 32rem),
+    linear-gradient(135deg, #f7fbfd 0%, #eef6fa 100%);
+  color: var(--admin-text);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.admin-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background:
+    linear-gradient(135deg, rgba(18, 60, 90, .94), rgba(11, 45, 69, .92)),
+    url("/images/branding/logo-redisenado.png") center / 20rem no-repeat;
+}
+
+.admin-loading > div {
+  max-width: 42rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .24);
+}
+
+.admin-loading__eyebrow {
+  color: var(--admin-sky);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.admin-loading h1 {
+  margin: .7rem 0 .65rem;
+  color: var(--admin-navy);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1;
+}
+
+.admin-loading p {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.admin-ready .admin-loading {
+  display: none;
+}
+
+/* Ajustes visuales suaves sobre Decap: no cambian su lógica ni autenticación. */
+[class*="AuthenticationPage"],
+[class*="LoginPage"],
+[class*="StyledAuthenticationPage"] {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(120, 203, 232, .25), transparent 26rem),
+    linear-gradient(135deg, var(--admin-navy), var(--admin-navy-strong)) !important;
+}
+
+[class*="AuthenticationPage"] [class*="Card"],
+[class*="LoginPage"] [class*="Card"],
+[class*="Login"] form,
+[class*="Authentication"] form {
+  border: 1px solid var(--admin-line) !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .22) !important;
+}
+
+button,
+[role="button"] {
+  border-radius: 999px !important;
+}
+
+a {
+  color: var(--admin-navy);
+}

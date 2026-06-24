@@ -10,6 +10,7 @@ backend:
 
 local_backend: true
 publish_mode: editorial_workflow
+
 # Traduce la interfaz general de Decap CMS. Los nombres, ayudas y opciones de
 # cada campo se definen en español más abajo para orientar a los editores.
 locale: es
@@ -17,18 +18,12 @@ site_url: https://issrc-web.ladardrgz.workers.dev
 display_url: https://issrc-web.ladardrgz.workers.dev
 logo_url: /images/branding/logo-redisenado.png
 
-# Cloudinary almacena y entrega los recursos desde su CDN. Cloud name y API key
-# son identificadores públicos requeridos por el widget; API secret nunca va aquí.
-media_library:
-  name: cloudinary
-  config:
-    cloud_name: dw9odd2n1
-    api_key: "483949511648638"
-    output_filename_only: false
-    use_secure_url: true
-    multiple: false
-
-# Compatibilidad con recursos históricos que ya existen dentro del repositorio.
+# Seguridad operativa:
+# - Ya no se usa el Media Library embebido de Cloudinary porque depende de
+#   iframes/cookies de terceros y puede fallar en navegadores modernos.
+# - Las personas editoras suben imágenes/PDFs desde el panel oficial de
+#   Cloudinary y pegan acá la URL segura de res.cloudinary.com.
+# - API secret de Cloudinary nunca debe escribirse en este repositorio.
 media_folder: public/uploads/images
 public_folder: /uploads/images
 
@@ -59,7 +54,12 @@ collections:
         field: status
         pattern: published
     fields:
-      - { label: Título, name: title, widget: string, required: true, minlength: 5, maxlength: 120 }
+      - label: Título
+        name: title
+        widget: string
+        required: true
+        minlength: 5
+        maxlength: 120
       - label: Slug
         name: slug
         widget: string
@@ -67,31 +67,42 @@ collections:
         minlength: 3
         maxlength: 100
         hint: "URL sin espacios ni acentos. Ejemplo: inscripciones-2026. No cambiar después de publicar."
-        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Usá minúsculas, números y guiones simples."]
-      - { label: Fecha, name: date, widget: datetime, required: true, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "Usá minúsculas, números y guiones simples. No uses espacios, tildes ni símbolos."]
+      - label: Fecha
+        name: date
+        widget: datetime
+        required: true
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
       - label: Categoría
         name: category
         widget: select
         required: true
         options: [Institucional, Comunicado, Académica, Actividades]
         default: Institucional
-      - { label: Resumen, name: summary, widget: text, required: false, maxlength: 280, hint: "Opcional. Si falta, la tarjeta no muestra un texto vacío." }
-      - label: Imagen destacada
+      - label: Resumen
+        name: summary
+        widget: text
+        required: false
+        maxlength: 280
+        hint: "Opcional. Máximo 280 caracteres. Si queda vacío, la tarjeta no muestra un texto de relleno."
+      - label: URL de imagen destacada en Cloudinary
         name: featuredImage
-        widget: image
+        widget: string
         required: false
-        accept: image/avif,image/gif,image/jpeg,image/png,image/webp
-        hint: "Opcional. Subí una imagen horizontal a Cloudinary. Formatos: AVIF, GIF, JPEG, PNG o WebP."
-      - label: Documento PDF
+        hint: "Opcional. Subí la imagen en Cloudinary, copiá la URL segura y pegala acá. Debe empezar con https://res.cloudinary.com/dw9odd2n1/image/upload/ y terminar en .avif, .gif, .jpg, .jpeg, .png o .webp."
+        pattern:
+          - '^$|^https:\/\/res\.cloudinary\.com\/dw9odd2n1\/image\/upload\/[^?#]+\.(?:avif|gif|jpe?g|png|webp)(?:[?#].*)?$'
+          - "La imagen debe ser una URL segura de Cloudinary del cloud dw9odd2n1 y terminar en AVIF, GIF, JPG, JPEG, PNG o WebP. No pegues enlaces de la consola ni de otros sitios."
+      - label: URL de documento PDF en Cloudinary
         name: pdf
-        widget: file
+        widget: string
         required: false
-        choose_url: false
-        accept: application/pdf
-        media_library:
-          config:
-            multiple: false
-        hint: "Opcional. Solo PDF. Seleccionalo desde Cloudinary; comprobá el enlace antes de publicar."
+        hint: "Opcional. Subí el PDF en Cloudinary y pegá la URL segura. Debe empezar con https://res.cloudinary.com/dw9odd2n1/raw/upload/ o /image/upload/ y terminar en .pdf."
+        pattern:
+          - '^$|^https:\/\/res\.cloudinary\.com\/dw9odd2n1\/(?:raw|image)\/upload\/[^?#]+\.pdf(?:[?#].*)?$'
+          - "El documento debe ser un PDF público de Cloudinary del cloud dw9odd2n1. No pegues enlaces privados, de vista previa, ni rutas locales."
       - label: Estado
         name: status
         widget: select
@@ -101,4 +112,11 @@ collections:
           - { label: Publicado, value: published }
         default: draft
         hint: "Debe estar en Publicado y completar el flujo editorial para aparecer en el sitio."
-      - { label: Contenido principal, name: body, widget: markdown, required: true, minimal: true, hint: "Usá Markdown. El sitio rechaza HTML crudo por seguridad." }
+      - label: Contenido principal
+        name: body
+        widget: markdown
+        required: true
+        minimal: true
+        buttons: [bold, italic, code, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+        editor_components: []
+        hint: "Usá Markdown. Por seguridad, evitá pegar HTML crudo, scripts, iframes, formularios o imágenes dentro del cuerpo. Para imágenes, usá el campo URL de imagen destacada."

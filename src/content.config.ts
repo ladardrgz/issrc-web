@@ -13,7 +13,7 @@ const optionalAsset = (folder: 'images' | 'documents', extensions: string[]) =>
           `^(?:/uploads/${folder}/[^?#]+|https://res\\.cloudinary\\.com/${CLOUDINARY_CLOUD_NAME}/(?:image|raw)/upload/[^?#]+)\\.(${extensions.join('|')})(?:[?#].*)?$`,
           'i',
         ),
-        `El archivo debe ser un recurso permitido de Cloudinary o estar dentro de /uploads/${folder}/.`,
+        `El archivo debe estar en Cloudinary (${CLOUDINARY_CLOUD_NAME}) o, por compatibilidad histórica, dentro de /uploads/${folder}/. Revisá que la extensión sea: ${extensions.join(', ')}.`,
       )
       .optional(),
   );
