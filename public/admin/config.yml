@@ -150,10 +150,10 @@ collections:
         hint: >
           Opcional. Subí el PDF a Google Drive, configurá el permiso como
           'Cualquier persona con el enlace puede ver' y pegá el enlace público.
-          No pegues enlaces privados, carpetas, documentos editables ni URLs de Cloudinary para PDFs.
+          Se aceptan enlaces de drive.google.com o docs.google.com. No pegues URLs de Cloudinary para PDFs.
         pattern:
-          - '^$|^https:\/\/drive\.google\.com\/(?:file\/d\/[A-Za-z0-9_-]+(?:\/(?:view|preview))?|open\?id=[A-Za-z0-9_-]+|uc\?(?:export=download&)?id=[A-Za-z0-9_-]+)(?:[?&][^\s]*)?$'
-          - "El documento debe ser un enlace público válido de Google Drive. Usá Compartir → Cualquier persona con el enlace puede ver → Copiar enlace."
+          - '^$|^https:\/\/(?:drive|docs)\.google\.com\/[^\s]+$'
+          - "El documento debe ser un enlace de Google Drive o Google Docs. Usá Compartir → Cualquier persona con el enlace puede ver → Copiar enlace."
 
       - label: Texto del botón del documento
         name: pdfLabel

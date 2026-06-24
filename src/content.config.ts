@@ -29,7 +29,7 @@ const optionalPdf = () =>
             '^(',
             '/uploads/documents/[^?#]+\\.pdf',
             `|https://res\\.cloudinary\\.com/${CLOUDINARY_CLOUD_NAME}/(?:image|raw)/upload/[^?#]+\\.pdf`,
-            '|https://drive\\.google\\.com/(?:file/d/[A-Za-z0-9_-]+(?:/(?:view|preview))?|open\\?id=[A-Za-z0-9_-]+|uc\\?(?:export=download&)?id=[A-Za-z0-9_-]+)(?:[?&][^\\s]*)?',
+            '|https://(?:drive|docs)\\.google\\.com/[^\\s]+',
             ')$',
           ].join(''),
           'i',
